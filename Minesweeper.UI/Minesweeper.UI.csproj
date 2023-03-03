@@ -89,5 +89,41 @@
   <ItemGroup>
     <None Include="Image\Flaged.bmp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Image\ExplosedMine.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Image\Opened1.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Image\Opened2.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Image\Opened3.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Image\Opened4.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Image\Opened5.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Image\Opened6.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Image\Opened7.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Image\Opened8.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Image\OpenedEmpty.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Minesweeper.Logic\Minesweeper.Logic.csproj">
+      <Project>{82af0014-0cbd-401b-92dc-652e00c29bf1}</Project>
+      <Name>Minesweeper.Logic</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

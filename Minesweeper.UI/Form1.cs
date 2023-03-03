@@ -18,8 +18,17 @@ namespace Minesweeper.UI
         public Form1()
         {
             InitializeComponent();
-
+            SetFormSize();
             InitFieldButtons();
+        }
+
+        private void SetFormSize()
+        {
+
+            var width = fieldSize * buttonSize + fieldSize*2;
+            var height = fieldSize * buttonSize + fieldSize*2 +20;
+
+            this.Size = new Size(width, height);
         }
 
         private void InitFieldButtons()
