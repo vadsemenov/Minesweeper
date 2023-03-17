@@ -2,7 +2,7 @@
 
 public enum CellStatus
 {
-    ClosedCell = 0,
+    NotOpenedCell = 0,
     OpenedCell = 1,
     Flag = 2
 }

@@ -68,7 +68,8 @@ public class Game
 
         if (cell.CellStatus == CellStatus.Flag)
         {
-            cell.CellStatus = CellStatus.ClosedCell;
+            cell.CellStatus = CellStatus.NotOpenedCell;
+            return;
         }
 
         cell.CellStatus = CellStatus.Flag;
@@ -102,6 +103,8 @@ public class Game
 
             return GameStatus;
         }
+
+        Field[rowCount, columnCount].CellStatus = CellStatus.OpenedCell;
 
         OpenCellsInBreadth(rowCount, columnCount);
 
@@ -161,38 +164,28 @@ public class Game
         }
     }
 
-    private void AddNeighboringCellsToQueue(int rowCount, int columnCount, Queue<(int, int)> visitQueue,
-        List<(int, int)> visited)
+    private void AddNeighboringCellsToQueue(int rowCount, int columnCount, Queue<(int, int)> visitQueue, List<(int, int)> visited)
     {
-        if (rowCount - 1 >= 0)
+        for (int i = rowCount-1; i <= rowCount+1; i++)
         {
-            if (!visited.Contains((rowCount - 1, columnCount)))
+            for (int j = columnCount-1; j <= columnCount+1; j++)
             {
-                visitQueue.Enqueue((rowCount - 1, columnCount));
-            }
-        }
+                if (i == rowCount && j == columnCount)
+                {
+                    continue;
+                }
 
-        if (rowCount + 1 < RowsAmount)
-        {
-            if (!visited.Contains((rowCount + 1, columnCount)))
-            {
-                visitQueue.Enqueue((rowCount + 1, columnCount));
-            }
-        }
-
-        if (columnCount - 1 >= 0)
-        {
-            if (!visited.Contains((rowCount, columnCount - 1)))
-            {
-                visitQueue.Enqueue((rowCount, columnCount - 1));
-            }
-        }
-
-        if (columnCount + 1 < ColumnsAmount)
-        {
-            if (!visited.Contains((rowCount, columnCount + 1)))
-            {
-                visitQueue.Enqueue((rowCount, columnCount + 1));
+                if (i >= 0 && j >= 0 && i < RowsAmount && j< ColumnsAmount)
+                {
+                    if (!visited.Contains((i, j)))
+                    {
+                        visitQueue.Enqueue((i, j));
+                        if (Field[i, j].CellContent != CellContent.Mine)
+                        {
+                            Field[i, j].CellStatus = CellStatus.OpenedCell;
+                        }
+                    }
+                }
             }
         }
     }
@@ -223,7 +216,7 @@ public class Game
             {
                 Field[i, j] = new Cell();
                 Field[i, j].CellContent = CellContent.EmptyCell;
-                Field[i, j].CellStatus = CellStatus.ClosedCell;
+                Field[i, j].CellStatus = CellStatus.NotOpenedCell;
             }
         }
     }
