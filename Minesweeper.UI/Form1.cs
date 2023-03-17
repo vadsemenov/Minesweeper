@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Minesweeper.UI
@@ -26,7 +20,7 @@ namespace Minesweeper.UI
         {
 
             var width = fieldSize * buttonSize + fieldSize*2;
-            var height = fieldSize * buttonSize + fieldSize*2 +20;
+            var height = fieldSize * buttonSize + fieldSize*2 + 50;
 
             this.Size = new Size(width, height);
         }
@@ -35,15 +29,15 @@ namespace Minesweeper.UI
         {
             fieldsButtons = new Button[fieldSize, fieldSize];
 
-            for (int i = 0; i < fieldsButtons.GetLength(0); i++)
+            for (int i = 0; i < fieldsButtons.GetLength(1); i++)
             {
-                for (int j = 0; j < fieldsButtons.GetLength(1); j++)
+                for (int j = 0; j < fieldsButtons.GetLength(0); j++)
                 {
                     var button = new Button();
                     // button.Click += ClickButton;
                     button.MouseUp += ClickMouse;
                     button.Image = Properties.Resources.NotOpened;
-                    button.Location = new Point(i*buttonSize, j*buttonSize);
+                    button.Location = new Point(i*buttonSize, j*buttonSize+30);
                     button.Size = new Size(buttonSize, buttonSize);
                     this.Controls.Add(button);
                     fieldsButtons[j,i] = button;
