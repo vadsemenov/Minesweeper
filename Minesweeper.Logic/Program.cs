@@ -10,12 +10,13 @@ namespace Minesweeper.Logic
     {
         public static void Main(string[] args)
         {
-            // Блок «легкий» настраивает игровое поле по размерам 8х8 и количеством мин -6.
-            // Блок «средний» настраивает игровое поле по размерам 12х12 и количеством мин -20.
-            // Блок «сложный» настраивает игровое поле по размерам 20х20 и количеством мин -55.
-            var board = new Board(5, 5, 5);
+            var board = new Game(12, 12, 20);
+
+            board.TryOpenCell(0, 3);
+            board.TryOpenCell(11, 11);
 
             Console.WriteLine(board);
+            Console.WriteLine(board.FieldView());
 
             Console.Read();
         }
