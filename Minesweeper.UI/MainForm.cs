@@ -6,20 +6,25 @@ using Minesweeper.UI.Controller;
 
 namespace Minesweeper.UI
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         private MinesweeperController _controller;
 
-        private ExtendedButton[,] buttonsField;
+        private ExtendedButton[,] _buttonsField;
 
         private const int ButtonWidth = 36;
         private const int ButtonHeight = 36;
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
 
-            _controller = new MinesweeperController(GameDifficulty.Hard, RedrawFieldEvent);
+            InitializeNewField(GameDifficulty.Hard);
+        }
+
+        private void InitializeNewField(GameDifficulty gameDifficulty)
+        {
+            _controller = new MinesweeperController(gameDifficulty, RedrawFieldEvent);
 
             CreateFieldView();
 
@@ -28,10 +33,12 @@ namespace Minesweeper.UI
 
         private void CreateFieldView()
         {
+            tableLayoutPanel1.Controls.Clear();
+
             tableLayoutPanel1.RowCount = _controller.RowsAmount;
             tableLayoutPanel1.ColumnCount = _controller.ColumnsAmount;
 
-            buttonsField = new ExtendedButton[_controller.RowsAmount, _controller.ColumnsAmount];
+            _buttonsField = new ExtendedButton[_controller.RowsAmount, _controller.ColumnsAmount];
 
             for (int i = 0; i < _controller.RowsAmount; i++)
             {
@@ -47,7 +54,7 @@ namespace Minesweeper.UI
                     button.MouseUp += ClickMouse;
                     button.Click += ClickButton;
 
-                    buttonsField[i, j] = button;
+                    _buttonsField[i, j] = button;
 
                     tableLayoutPanel1.Controls.Add(button, j, i);
                 }
@@ -65,48 +72,48 @@ namespace Minesweeper.UI
 
                     if (cell.CellStatus == CellStatus.NotOpenedCell)
                     {
-                        buttonsField[i, j].Image = Properties.Resources.NotOpened;
+                        _buttonsField[i, j].Image = Properties.Resources.NotOpened;
                     }
                     else if (cell.CellStatus == CellStatus.Flag)
                     {
-                        buttonsField[i, j].Image = Properties.Resources.Flaged;
+                        _buttonsField[i, j].Image = Properties.Resources.Flaged;
                     }
                     else
                     {
                         switch (cell.CellContent)
                         {
                             case CellContent.Mine:
-                                buttonsField[i, j].Image = Properties.Resources.Mine;
+                                _buttonsField[i, j].Image = Properties.Resources.Mine;
                                 break;
                             case CellContent.NearOneMine:
-                                buttonsField[i, j].Image = Properties.Resources.Opened1;
+                                _buttonsField[i, j].Image = Properties.Resources.Opened1;
                                 break;
                             case CellContent.NearTwoMine:
-                                buttonsField[i, j].Image = Properties.Resources.Opened2;
+                                _buttonsField[i, j].Image = Properties.Resources.Opened2;
                                 break;
                             case CellContent.NearThreeMine:
-                                buttonsField[i, j].Image = Properties.Resources.Opened3;
+                                _buttonsField[i, j].Image = Properties.Resources.Opened3;
                                 break;
                             case CellContent.NearFourMine:
-                                buttonsField[i, j].Image = Properties.Resources.Opened4;
+                                _buttonsField[i, j].Image = Properties.Resources.Opened4;
                                 break;
                             case CellContent.NearFiveMine:
-                                buttonsField[i, j].Image = Properties.Resources.Opened5;
-                                break; 
+                                _buttonsField[i, j].Image = Properties.Resources.Opened5;
+                                break;
                             case CellContent.NearSixMine:
-                                buttonsField[i, j].Image = Properties.Resources.Opened6;
-                                break; 
+                                _buttonsField[i, j].Image = Properties.Resources.Opened6;
+                                break;
                             case CellContent.NearSevenMine:
-                                buttonsField[i, j].Image = Properties.Resources.Opened7;
-                                break; 
+                                _buttonsField[i, j].Image = Properties.Resources.Opened7;
+                                break;
                             case CellContent.NearEightMine:
-                                buttonsField[i, j].Image = Properties.Resources.Opened8;
-                                break; 
+                                _buttonsField[i, j].Image = Properties.Resources.Opened8;
+                                break;
                             case CellContent.ExplosedMine:
-                                buttonsField[i, j].Image = Properties.Resources.ExplosedMine;
+                                _buttonsField[i, j].Image = Properties.Resources.ExplosedMine;
                                 break;
                             case CellContent.EmptyCell:
-                                buttonsField[i, j].Image = Properties.Resources.OpenedEmpty;
+                                _buttonsField[i, j].Image = Properties.Resources.OpenedEmpty;
                                 break;
                         }
                     }
@@ -118,16 +125,16 @@ namespace Minesweeper.UI
 
         private void SetFormSize()
         {
-        
-            var width = tableLayoutPanel1.Bounds.Width+20;
-            var height = tableLayoutPanel1.Bounds.Height + 50 +20;
-        
-            this.Size = new Size(width, height);
+
+            var width = tableLayoutPanel1.Bounds.Width + 20;
+            var height = tableLayoutPanel1.Bounds.Height + 50 + 20;
+
+            Size = new Size(width, height);
         }
 
         private void ClickMouse(object sender, MouseEventArgs e)
         {
-            var button = (ExtendedButton) sender;
+            var button = (ExtendedButton)sender;
 
             if (e.Button == MouseButtons.Right)
             {
@@ -136,11 +143,47 @@ namespace Minesweeper.UI
             else
             {
                 _controller.TryOpenCell(button.RowCount, button.ColumnCount);
+
+                if (_controller.GameStatus == GameStatus.Win)
+                {
+                    MessageBox.Show("Выиграл!");
+                }
             }
         }
 
-        private void ClickButton(object button, EventArgs e)
+        private void ClickButton(object sender, EventArgs e)
         {
+            var button = (ExtendedButton)sender;
+
+            _controller.TryOpenCell(button.RowCount, button.ColumnCount);
+        }
+
+        private void newGameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var newGameForm = new NewGameForm();
+
+            if (newGameForm.ShowDialog(this) == DialogResult.OK)
+            {
+                InitializeNewField(newGameForm.GameDifficulty);
+            }
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Developed by Vadim Semenov. \r\n Email: 5587394@mail.ru \r\n Telegram: @VadSemenov",
+                "About game", MessageBoxButtons.OK);
+        }
+
+        private void highScoresToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var highScoresForm = new HighScoresForm();
+
+            highScoresForm.ShowDialog();
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Dispose();
         }
     }
 

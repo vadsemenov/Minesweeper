@@ -122,7 +122,7 @@ public class Game
         {
             for (int j = 0; j < ColumnsAmount; j++)
             {
-                if (Field[i, j].CellStatus != CellStatus.OpenedCell)
+                if (Field[i, j].CellStatus != CellStatus.OpenedCell && Field[i, j].CellContent != CellContent.Mine)
                 {
                     return false;
                 }
