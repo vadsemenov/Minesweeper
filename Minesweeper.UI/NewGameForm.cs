@@ -13,7 +13,7 @@ namespace Minesweeper.UI
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void difficultySelectionButton_Click(object sender, EventArgs e)
         {
             if (easyDifficultRadioButton.Checked)
             {

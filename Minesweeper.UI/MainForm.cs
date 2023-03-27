@@ -15,11 +15,13 @@ namespace Minesweeper.UI
         private const int ButtonWidth = 36;
         private const int ButtonHeight = 36;
 
+        private bool _isGameOver;
+
         public MainForm()
         {
             InitializeComponent();
 
-            InitializeNewField(GameDifficulty.Hard);
+            InitializeNewField(GameDifficulty.Easy);
         }
 
         private void InitializeNewField(GameDifficulty gameDifficulty)
@@ -29,6 +31,8 @@ namespace Minesweeper.UI
             CreateFieldView();
 
             SetFormSize();
+
+            _isGameOver = false;
         }
 
         private void CreateFieldView()
@@ -40,9 +44,9 @@ namespace Minesweeper.UI
 
             _buttonsField = new ExtendedButton[_controller.RowsAmount, _controller.ColumnsAmount];
 
-            for (int i = 0; i < _controller.RowsAmount; i++)
+            for (var i = 0; i < _controller.RowsAmount; i++)
             {
-                for (int j = 0; j < _controller.ColumnsAmount; j++)
+                for (var j = 0; j < _controller.ColumnsAmount; j++)
                 {
                     var button = new ExtendedButton(i, j);
                     button.Name = $"{i},{j}";
@@ -52,7 +56,6 @@ namespace Minesweeper.UI
                     button.Padding = Padding.Empty;
                     button.Image = Properties.Resources.NotOpened;
                     button.MouseUp += ClickMouse;
-                    button.Click += ClickButton;
 
                     _buttonsField[i, j] = button;
 
@@ -61,12 +64,11 @@ namespace Minesweeper.UI
             }
         }
 
-
         private void RedrawFieldEvent()
         {
-            for (int i = 0; i < _controller.RowsAmount; i++)
+            for (var i = 0; i < _controller.RowsAmount; i++)
             {
-                for (int j = 0; j < _controller.ColumnsAmount; j++)
+                for (var j = 0; j < _controller.ColumnsAmount; j++)
                 {
                     var cell = _controller.Field[i, j];
 
@@ -125,7 +127,6 @@ namespace Minesweeper.UI
 
         private void SetFormSize()
         {
-
             var width = tableLayoutPanel1.Bounds.Width + 20;
             var height = tableLayoutPanel1.Bounds.Height + 50 + 20;
 
@@ -134,7 +135,12 @@ namespace Minesweeper.UI
 
         private void ClickMouse(object sender, MouseEventArgs e)
         {
-            var button = (ExtendedButton)sender;
+            if (_isGameOver)
+            {
+                return;
+            }
+
+            var button = (ExtendedButton) sender;
 
             if (e.Button == MouseButtons.Right)
             {
@@ -144,18 +150,11 @@ namespace Minesweeper.UI
             {
                 _controller.TryOpenCell(button.RowCount, button.ColumnCount);
 
-                if (_controller.GameStatus == GameStatus.Win)
+                if (_controller.GameStatus is GameStatus.Win or GameStatus.Lose)
                 {
-                    MessageBox.Show("Выиграл!");
+                    _isGameOver = true;
                 }
             }
-        }
-
-        private void ClickButton(object sender, EventArgs e)
-        {
-            var button = (ExtendedButton)sender;
-
-            _controller.TryOpenCell(button.RowCount, button.ColumnCount);
         }
 
         private void newGameToolStripMenuItem_Click(object sender, EventArgs e)
@@ -171,12 +170,12 @@ namespace Minesweeper.UI
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Developed by Vadim Semenov. \r\n Email: 5587394@mail.ru \r\n Telegram: @VadSemenov",
-                "About game", MessageBoxButtons.OK);
+                "About game", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void highScoresToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var highScoresForm = new HighScoresForm();
+            var highScoresForm = new BestTimesForm(_controller.RecordsTimes);
 
             highScoresForm.ShowDialog();
         }
@@ -184,19 +183,6 @@ namespace Minesweeper.UI
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Dispose();
-        }
-    }
-
-    class ExtendedButton : Button
-    {
-        public int RowCount { get; set; }
-
-        public int ColumnCount { get; set; }
-
-        public ExtendedButton(int rowCount, int columnCount)
-        {
-            RowCount = rowCount;
-            ColumnCount = columnCount;
         }
     }
 }

@@ -1,42 +1,134 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Windows.Forms;
 using Minesweeper.Logic;
 using Minesweeper.Logic.Enums;
+using System.IO;
+using System.Linq;
+using System.Text.Json;
 
-namespace Minesweeper.UI.Controller
+namespace Minesweeper.UI.Controller;
+public class MinesweeperController
 {
-    public class MinesweeperController
+    private readonly Game _game;
+    public GameDifficulty GameDifficulty { get; private set; }
+
+    public int RowsAmount => _game.RowsAmount;
+    public int ColumnsAmount => _game.ColumnsAmount;
+
+    public Cell[,] Field => _game.Field;
+
+    public GameStatus GameStatus => _game.GameStatus;
+
+    public event Action RedrawFieldEvent;
+
+    private Stopwatch _timer = new Stopwatch();
+
+    public double ElapsedTime => (double)_timer.ElapsedMilliseconds / 1000;
+
+    public List<RecordTime> RecordsTimes => ReadRecordsFromFile();
+
+    public MinesweeperController(GameDifficulty gameDifficulty, Action redrawFieldEvent)
     {
-        private Game _game;
-        public GameDifficulty GameDifficulty { get; private set; }
+        RedrawFieldEvent = redrawFieldEvent;
 
-        public int RowsAmount => _game.RowsAmount;
-        public int ColumnsAmount => _game.ColumnsAmount;
+        GameDifficulty = gameDifficulty;
 
-        public Cell[,] Field => _game.Field;
+        _game = new Game(gameDifficulty);
 
-        public GameStatus GameStatus => _game.GameStatus;
+        _timer.Restart();
+    }
 
-        public event Action RedrawFieldEvent; 
+    public void TryOpenCell(int rowCount, int columnCount)
+    {
+        _game.TryOpenCell(rowCount, columnCount);
+        RedrawFieldEvent?.Invoke();
 
-        public MinesweeperController(GameDifficulty gameDifficulty, Action redrawFieldEvent)
+        CheckWinOrLoseGame();
+    }
+
+    private void CheckWinOrLoseGame()
+    {
+        if (_game.GameStatus == GameStatus.Win)
         {
-            RedrawFieldEvent = redrawFieldEvent;
+            _timer.Stop();
 
-            GameDifficulty = gameDifficulty;
+            MessageBox.Show($"Win!\r\n Time: {ElapsedTime} seconds", "Win the Game!", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            _game = new Game(GameDifficulty);
+            CheckAndAddNewRecord();
         }
 
-        public void TryOpenCell(int rowCount, int columnCount)
+        if (_game.GameStatus == GameStatus.Lose)
         {
-            _game.TryOpenCell(rowCount, columnCount);
-            RedrawFieldEvent?.Invoke();
+            _timer.Stop();
+
+            MessageBox.Show($"Lose the Game!", "Lose!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+    }
+
+    private void CheckAndAddNewRecord()
+    {
+        var records = ReadRecordsFromFile();
+
+        var insertIndex = records.OrderBy(rt => rt.Time).TakeWhile(rt => rt.Time <= ElapsedTime).Count();
+
+        if (insertIndex < 5)
+        {
+            MessageBox.Show($"New Record!\r\n Time: {ElapsedTime} seconds");
+
+            var recordsUserName = "Unknown";
+
+            var newRecordsUserName = new RecordsUserNameForm();
+
+            if (newRecordsUserName.ShowDialog() == DialogResult.OK)
+            {
+                recordsUserName = newRecordsUserName.UserName;
+            }
+
+            records.Insert(insertIndex, new RecordTime(recordsUserName, ElapsedTime));
+
+            var highScores = new BestTimesForm(records);
+
+            highScores.ShowDialog();
         }
 
-        public void TrySetRemoveFlag(Cell cell)
+        WriteRecordsToFile(records);
+    }
+
+    private List<RecordTime> ReadRecordsFromFile()
+    {
+        if (!File.Exists("records.txt"))
         {
-            _game.TrySetOrRemoveFlag(cell);
-            RedrawFieldEvent?.Invoke();
+            return new List<RecordTime>();
         }
+
+        var text = File.ReadAllText("records.txt");
+
+        List<RecordTime> records;
+
+        try
+        {
+            records = JsonSerializer.Deserialize<List<RecordTime>>(text);
+        }
+        catch
+        {
+            return new List<RecordTime>();
+        }
+
+        return records;
+    }
+
+    private void WriteRecordsToFile(List<RecordTime> recordsList)
+    {
+        var text = JsonSerializer.Serialize<List<RecordTime>>(recordsList);
+
+        File.WriteAllText("records.txt", text);
+    }
+
+    public void TrySetRemoveFlag(Cell cell)
+    {
+        _game.TrySetOrRemoveFlag(cell);
+        RedrawFieldEvent?.Invoke();
     }
 }

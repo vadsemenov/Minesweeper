@@ -36,9 +36,9 @@ public class Game
         switch (gameDifficulty)
         {
             case GameDifficulty.Easy:
-                RowsAmount = 8;
-                ColumnsAmount = 8;
-                MineAmount = 6;
+                RowsAmount = 9;
+                ColumnsAmount = 9;
+                MineAmount = 10;
                 break;
             case GameDifficulty.Normal:
                 RowsAmount = 12;
@@ -77,8 +77,7 @@ public class Game
 
     public GameStatus TryOpenCell(int rowCount, int columnCount)
     {
-        if (rowCount < 0 || columnCount < 0 || rowCount >= Field.GetLength(1)
-            || columnCount >= Field.GetLength(0))
+        if (rowCount < 0 || columnCount < 0 || rowCount >= Field.GetLength(1) || columnCount >= Field.GetLength(0))
         {
             return GameStatus;
         }
@@ -110,6 +109,7 @@ public class Game
 
         if (CheckWinGameStatus())
         {
+            OpenAllCells();
             GameStatus = GameStatus.Win;
         }
 
@@ -118,9 +118,9 @@ public class Game
 
     private bool CheckWinGameStatus()
     {
-        for (int i = 0; i < RowsAmount; i++)
+        for (var i = 0; i < RowsAmount; i++)
         {
-            for (int j = 0; j < ColumnsAmount; j++)
+            for (var j = 0; j < ColumnsAmount; j++)
             {
                 if (Field[i, j].CellStatus != CellStatus.OpenedCell && Field[i, j].CellContent != CellContent.Mine)
                 {
@@ -154,8 +154,7 @@ public class Game
 
             var currentCell = Field[currentCoord.rowCount, currentCoord.columnCount];
 
-            if (currentCell.CellContent == CellContent.EmptyCell
-                && currentCell.CellStatus != CellStatus.Flag)
+            if (currentCell.CellContent == CellContent.EmptyCell && currentCell.CellStatus != CellStatus.Flag)
             {
                 currentCell.CellStatus = CellStatus.OpenedCell;
 
@@ -166,9 +165,9 @@ public class Game
 
     private void AddNeighboringCellsToQueue(int rowCount, int columnCount, Queue<(int, int)> visitQueue, List<(int, int)> visited)
     {
-        for (int i = rowCount-1; i <= rowCount+1; i++)
+        for (var i = rowCount-1; i <= rowCount+1; i++)
         {
-            for (int j = columnCount-1; j <= columnCount+1; j++)
+            for (var j = columnCount-1; j <= columnCount+1; j++)
             {
                 if (i == rowCount && j == columnCount)
                 {
@@ -192,9 +191,9 @@ public class Game
 
     private void OpenAllCells()
     {
-        for (int i = 0; i < RowsAmount; i++)
+        for (var i = 0; i < RowsAmount; i++)
         {
-            for (int j = 0; j < ColumnsAmount; j++)
+            for (var j = 0; j < ColumnsAmount; j++)
             {
                 Field[i, j].CellStatus = CellStatus.OpenedCell;
             }
@@ -210,9 +209,9 @@ public class Game
 
     private void CreateField()
     {
-        for (int i = 0; i < RowsAmount; i++)
+        for (var i = 0; i < RowsAmount; i++)
         {
-            for (int j = 0; j < ColumnsAmount; j++)
+            for (var j = 0; j < ColumnsAmount; j++)
             {
                 Field[i, j] = new Cell();
                 Field[i, j].CellContent = CellContent.EmptyCell;
@@ -240,9 +239,9 @@ public class Game
 
     private void PlaceDigits()
     {
-        for (int i = 0; i < RowsAmount; i++)
+        for (var i = 0; i < RowsAmount; i++)
         {
-            for (int j = 0; j < ColumnsAmount; j++)
+            for (var j = 0; j < ColumnsAmount; j++)
             {
                 if (Field[i, j].CellContent == CellContent.EmptyCell)
                 {
@@ -279,9 +278,9 @@ public class Game
     {
         var stringBuilder = new StringBuilder();
 
-        for (int i = 0; i < RowsAmount; i++)
+        for (var i = 0; i < RowsAmount; i++)
         {
-            for (int j = 0; j < ColumnsAmount; j++)
+            for (var j = 0; j < ColumnsAmount; j++)
             {
                 if (Field[i, j].CellContent == CellContent.Mine)
                 {
@@ -303,9 +302,9 @@ public class Game
     {
         var stringBuilder = new StringBuilder();
 
-        for (int i = 0; i < RowsAmount; i++)
+        for (var i = 0; i < RowsAmount; i++)
         {
-            for (int j = 0; j < ColumnsAmount; j++)
+            for (var j = 0; j < ColumnsAmount; j++)
             {
                 stringBuilder.Append((int)Field[i, j].CellStatus + " ");
             }
