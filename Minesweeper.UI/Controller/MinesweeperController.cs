@@ -63,7 +63,7 @@ public class MinesweeperController
         {
             _timer.Stop();
 
-            MessageBox.Show($"Lose the Game!", "Lose!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Lose the Game!", "Lose!", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 
@@ -75,7 +75,7 @@ public class MinesweeperController
 
         if (insertIndex < 5)
         {
-            MessageBox.Show($"New Record!\r\n Time: {ElapsedTime} seconds");
+            MessageBox.Show($"New Record!\r\n Time: {ElapsedTime} seconds", "New Record!", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             var recordsUserName = "Unknown";
 
