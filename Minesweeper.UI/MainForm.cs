@@ -140,7 +140,7 @@ namespace Minesweeper.UI
                 return;
             }
 
-            var button = (ExtendedButton) sender;
+            var button = (ExtendedButton)sender;
 
             if (e.Button == MouseButtons.Right)
             {

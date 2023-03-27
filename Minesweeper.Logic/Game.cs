@@ -165,25 +165,30 @@ public class Game
 
     private void AddNeighboringCellsToQueue(int rowCount, int columnCount, Queue<(int, int)> visitQueue, List<(int, int)> visited)
     {
-        for (var i = rowCount-1; i <= rowCount+1; i++)
+        for (var i = rowCount - 1; i <= rowCount + 1; i++)
         {
-            for (var j = columnCount-1; j <= columnCount+1; j++)
+            for (var j = columnCount - 1; j <= columnCount + 1; j++)
             {
                 if (i == rowCount && j == columnCount)
                 {
                     continue;
                 }
 
-                if (i >= 0 && j >= 0 && i < RowsAmount && j< ColumnsAmount)
+                if (i < 0 || j < 0 || i >= RowsAmount || j >= ColumnsAmount)
                 {
-                    if (!visited.Contains((i, j)))
-                    {
-                        visitQueue.Enqueue((i, j));
-                        if (Field[i, j].CellContent != CellContent.Mine)
-                        {
-                            Field[i, j].CellStatus = CellStatus.OpenedCell;
-                        }
-                    }
+                    continue;
+                }
+
+                if (visited.Contains((i, j)))
+                {
+                    continue;
+                }
+
+                visitQueue.Enqueue((i, j));
+
+                if (Field[i, j].CellContent != CellContent.Mine)
+                {
+                    Field[i, j].CellStatus = CellStatus.OpenedCell;
                 }
             }
         }
@@ -213,9 +218,11 @@ public class Game
         {
             for (var j = 0; j < ColumnsAmount; j++)
             {
-                Field[i, j] = new Cell();
-                Field[i, j].CellContent = CellContent.EmptyCell;
-                Field[i, j].CellStatus = CellStatus.NotOpenedCell;
+                Field[i, j] = new Cell
+                {
+                    CellContent = CellContent.EmptyCell,
+                    CellStatus = CellStatus.NotOpenedCell
+                };
             }
         }
     }

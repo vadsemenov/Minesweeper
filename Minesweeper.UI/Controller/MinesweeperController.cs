@@ -23,7 +23,7 @@ public class MinesweeperController
 
     public event Action RedrawFieldEvent;
 
-    private Stopwatch _timer = new Stopwatch();
+    private readonly Stopwatch _timer = new();
 
     public double ElapsedTime => (double)_timer.ElapsedMilliseconds / 1000;
 
@@ -121,7 +121,7 @@ public class MinesweeperController
 
     private void WriteRecordsToFile(List<RecordTime> recordsList)
     {
-        var text = JsonSerializer.Serialize<List<RecordTime>>(recordsList);
+        var text = JsonSerializer.Serialize(recordsList);
 
         File.WriteAllText("records.txt", text);
     }

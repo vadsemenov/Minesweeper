@@ -18,7 +18,8 @@ namespace Minesweeper.UI
             if (easyDifficultRadioButton.Checked)
             {
                 GameDifficulty = GameDifficulty.Easy;
-            }else if (normalDifficultRadioButton.Checked)
+            }
+            else if (normalDifficultRadioButton.Checked)
             {
                 GameDifficulty = GameDifficulty.Normal;
             }
@@ -28,6 +29,7 @@ namespace Minesweeper.UI
             }
 
             DialogResult = DialogResult.OK;
+
             Close();
         }
     }
