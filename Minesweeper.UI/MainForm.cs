@@ -163,13 +163,13 @@ public partial class MainForm : Form
     {
         if (_controller.GameStatus == GameStatus.Win)
         {
-            MessageBox.Show($"Win!\r\n Time: {_controller.ElapsedTime} seconds", "Win the Game!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show($"Win!\r\nTime: {_controller.ElapsedTime} seconds", "Win the Game!", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             var recordPlace = _controller.GetNewRecordPlace;
 
             if (recordPlace is >= 0 and < 5)
             {
-                MessageBox.Show($"New Record!\r\n Time: {_controller.ElapsedTime} seconds", "New Record!", MessageBoxButtons.OK,
+                MessageBox.Show($"New Record!\r\nTime: {_controller.ElapsedTime} seconds", "New Record!", MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
 
                 var recordsUserName = "Unknown";
@@ -208,7 +208,7 @@ public partial class MainForm : Form
 
     private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
     {
-        MessageBox.Show("Developed by Vadim Semenov. \r\n Email: 5587394@mail.ru \r\n Telegram: @VadSemenov",
+        MessageBox.Show("Developed by Vadim Semenov.\r\nEmail: 5587394@mail.ru\r\nTelegram: @VadSemenov",
             "About game", MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
 

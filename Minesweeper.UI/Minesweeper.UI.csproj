@@ -6,7 +6,12 @@
     <Nullable>disable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>Mine.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Mine.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Minesweeper.Logic\Minesweeper.Logic.csproj" />

@@ -2,7 +2,6 @@
 {
     public partial class RecordsUserNameForm : Form
     {
-
         public string UserName { get; set; }
 
         public RecordsUserNameForm()

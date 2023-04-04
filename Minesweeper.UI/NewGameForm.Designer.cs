@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NewGameForm));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.hardDifficultRadioButton = new System.Windows.Forms.RadioButton();
@@ -46,11 +47,12 @@
             this.tableLayoutPanel1.Controls.Add(this.difficultySelectionButton, 0, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(208, 192);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(277, 295);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // groupBox1
@@ -59,10 +61,12 @@
             this.groupBox1.Controls.Add(this.normalDifficultRadioButton);
             this.groupBox1.Controls.Add(this.easyDifficultRadioButton);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.groupBox1.Location = new System.Drawing.Point(3, 3);
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.groupBox1.Location = new System.Drawing.Point(4, 5);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(202, 147);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox1.Size = new System.Drawing.Size(269, 226);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Game difficulty";
@@ -70,8 +74,9 @@
             // hardDifficultRadioButton
             // 
             this.hardDifficultRadioButton.AutoSize = true;
-            this.hardDifficultRadioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.hardDifficultRadioButton.Location = new System.Drawing.Point(69, 106);
+            this.hardDifficultRadioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.hardDifficultRadioButton.Location = new System.Drawing.Point(92, 163);
+            this.hardDifficultRadioButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.hardDifficultRadioButton.Name = "hardDifficultRadioButton";
             this.hardDifficultRadioButton.Size = new System.Drawing.Size(62, 24);
             this.hardDifficultRadioButton.TabIndex = 2;
@@ -81,8 +86,9 @@
             // normalDifficultRadioButton
             // 
             this.normalDifficultRadioButton.AutoSize = true;
-            this.normalDifficultRadioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.normalDifficultRadioButton.Location = new System.Drawing.Point(69, 65);
+            this.normalDifficultRadioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.normalDifficultRadioButton.Location = new System.Drawing.Point(92, 100);
+            this.normalDifficultRadioButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.normalDifficultRadioButton.Name = "normalDifficultRadioButton";
             this.normalDifficultRadioButton.Size = new System.Drawing.Size(77, 24);
             this.normalDifficultRadioButton.TabIndex = 1;
@@ -93,8 +99,9 @@
             // 
             this.easyDifficultRadioButton.AutoSize = true;
             this.easyDifficultRadioButton.Checked = true;
-            this.easyDifficultRadioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.easyDifficultRadioButton.Location = new System.Drawing.Point(69, 26);
+            this.easyDifficultRadioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.easyDifficultRadioButton.Location = new System.Drawing.Point(92, 40);
+            this.easyDifficultRadioButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.easyDifficultRadioButton.Name = "easyDifficultRadioButton";
             this.easyDifficultRadioButton.Size = new System.Drawing.Size(62, 24);
             this.easyDifficultRadioButton.TabIndex = 0;
@@ -105,9 +112,10 @@
             // difficultySelectionButton
             // 
             this.difficultySelectionButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.difficultySelectionButton.Location = new System.Drawing.Point(3, 156);
+            this.difficultySelectionButton.Location = new System.Drawing.Point(4, 241);
+            this.difficultySelectionButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.difficultySelectionButton.Name = "difficultySelectionButton";
-            this.difficultySelectionButton.Size = new System.Drawing.Size(202, 33);
+            this.difficultySelectionButton.Size = new System.Drawing.Size(269, 49);
             this.difficultySelectionButton.TabIndex = 1;
             this.difficultySelectionButton.Text = "OK";
             this.difficultySelectionButton.UseVisualStyleBackColor = true;
@@ -115,11 +123,13 @@
             // 
             // NewGameForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(208, 192);
+            this.ClientSize = new System.Drawing.Size(277, 295);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "NewGameForm";
