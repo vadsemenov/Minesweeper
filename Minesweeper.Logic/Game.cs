@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Diagnostics;
 using System.Text;
+using System.Text.Json;
 using Minesweeper.Logic.Enums;
 
 namespace Minesweeper.Logic;
@@ -13,9 +13,27 @@ public class Game
 
     public int MineAmount { get; private set; }
 
-    public GameStatus GameStatus { get; private set; }
+    private GameStatus _gameStatus;
+
+    public GameStatus GameStatus
+    {
+        get => _gameStatus;
+
+        private set
+        {
+            if (value is GameStatus.Lose or GameStatus.Win)
+            {
+                _timer.Stop();
+                _gameStatus = value;
+            }
+        }
+    }
 
     private readonly Random _random = new();
+
+    private readonly Stopwatch _timer = new();
+
+    public double ElapsedTime => (double)_timer.ElapsedMilliseconds / 1000;
 
     public Game(int rowsAmount, int columnsAmount, int mineAmount)
     {
@@ -29,6 +47,8 @@ public class Game
         GameStatus = GameStatus.Run;
 
         GenerateNewField();
+
+        _timer.Restart();
     }
 
     public Game(GameDifficulty gameDifficulty)
@@ -57,6 +77,8 @@ public class Game
         GameStatus = GameStatus.Run;
 
         GenerateNewField();
+
+        _timer.Restart();
     }
 
     public void TrySetOrRemoveFlag(Cell cell)
@@ -266,7 +288,7 @@ public class Game
         {
             for (var columnCount = j - 1; columnCount <= j + 1; columnCount++)
             {
-                if (rowCount < 0 || columnCount < 0 || rowCount > RowsAmount - 1 || columnCount > ColumnsAmount - 1)
+                if (rowCount < 0 || columnCount < 0 || rowCount >= RowsAmount || columnCount >= ColumnsAmount)
                 {
                     continue;
                 }
@@ -291,7 +313,7 @@ public class Game
             {
                 if (Field[y, x].CellContent == CellContent.Mine)
                 {
-                    stringBuilder.Append("*" + " ");
+                    stringBuilder.Append("* ");
                 }
                 else
                 {
@@ -321,4 +343,65 @@ public class Game
 
         return stringBuilder.ToString();
     }
+
+    public int GetNewRecordPlace()
+    {
+        var records = ReadRecordsFromFile();
+
+        var insertIndex = records.TakeWhile(rt => rt.Time <= ElapsedTime).Count();
+
+        if (insertIndex < 5)
+        {
+            return insertIndex;
+        }
+
+        return -1;
+    }
+
+    public bool AddNewRecord(int placeNumber, string name, double elapsedTime)
+    {
+        var records = ReadRecordsFromFile();
+
+        if (placeNumber >= 0 && placeNumber < 5)
+        {
+            records.Insert(placeNumber, new RecordTime(name ?? "Unknown", elapsedTime));
+
+            WriteRecordsToFile(records);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public List<RecordTime> ReadRecordsFromFile()
+    {
+        if (!File.Exists("records.txt"))
+        {
+            return new List<RecordTime>();
+        }
+
+        var text = File.ReadAllText("records.txt");
+
+        List<RecordTime> records;
+
+        try
+        {
+            records = JsonSerializer.Deserialize<List<RecordTime>>(text);
+        }
+        catch
+        {
+            return new List<RecordTime>();
+        }
+
+        return records?.OrderBy(rt => rt.Time).ToList();
+    }
+
+    private void WriteRecordsToFile(List<RecordTime> recordsList)
+    {
+        var text = JsonSerializer.Serialize(recordsList);
+
+        File.WriteAllText("records.txt", text);
+    }
+
 }

@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using Minesweeper.Logic;
 using Minesweeper.UI.Controller;
 
 namespace Minesweeper.UI
