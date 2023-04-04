@@ -112,7 +112,7 @@ namespace Minesweeper.UI
                             case CellContent.NearEightMine:
                                 _buttonsField[i, j].Image = Properties.Resources.Opened8;
                                 break;
-                            case CellContent.ExplosedMine:
+                            case CellContent.ExplodedMine:
                                 _buttonsField[i, j].Image = Properties.Resources.ExplodedMine;
                                 break;
                             case CellContent.EmptyCell:

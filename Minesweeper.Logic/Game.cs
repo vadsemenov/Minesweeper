@@ -94,7 +94,7 @@ public class Game
 
         if (Field[rowCount, columnCount].CellContent == CellContent.Mine)
         {
-            Field[rowCount, columnCount].CellContent = CellContent.ExplosedMine;
+            Field[rowCount, columnCount].CellContent = CellContent.ExplodedMine;
 
             GameStatus = GameStatus.Lose;
 
