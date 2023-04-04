@@ -144,11 +144,11 @@ public partial class MainForm : Form
 
         if (e.Button == MouseButtons.Right)
         {
-            _controller.TrySetRemoveFlag(_controller.Field[button.RowCount, button.ColumnCount]);
+            _controller.TrySetRemoveFlag(_controller.Field[button.RowIndex, button.ColumnIndex]);
         }
         else
         {
-            _controller.TryOpenCell(button.RowCount, button.ColumnCount);
+            _controller.TryOpenCell(button.RowIndex, button.ColumnIndex);
 
             if (_controller.GameStatus is GameStatus.Win or GameStatus.Lose)
             {

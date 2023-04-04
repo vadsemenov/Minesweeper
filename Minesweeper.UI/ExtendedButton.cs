@@ -1,16 +1,14 @@
-﻿using System.Windows.Forms;
-
-namespace Minesweeper.UI;
+﻿namespace Minesweeper.UI;
 
 internal class ExtendedButton : Button
 {
-    public int RowCount { get; set; }
+    public int RowIndex { get; set; }
 
-    public int ColumnCount { get; set; }
+    public int ColumnIndex { get; set; }
 
-    public ExtendedButton(int rowCount, int columnCount)
+    public ExtendedButton(int rowIndex, int columnIndex)
     {
-        RowCount = rowCount;
-        ColumnCount = columnCount;
+        RowIndex = rowIndex;
+        ColumnIndex = columnIndex;
     }
 }

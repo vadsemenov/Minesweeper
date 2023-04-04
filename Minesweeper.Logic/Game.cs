@@ -35,6 +35,8 @@ public class Game
 
     public double ElapsedTime => (double)_timer.ElapsedMilliseconds / 1000;
 
+    private const int TopRecordsAmount = 5;
+
     public Game(int rowsAmount, int columnsAmount, int mineAmount)
     {
         Field = new Cell[rowsAmount, columnsAmount];
@@ -350,7 +352,7 @@ public class Game
 
         var insertIndex = records.TakeWhile(rt => rt.Time <= ElapsedTime).Count();
 
-        if (insertIndex < 5)
+        if (insertIndex < TopRecordsAmount)
         {
             return insertIndex;
         }
@@ -362,7 +364,7 @@ public class Game
     {
         var records = ReadRecordsFromFile();
 
-        if (placeNumber >= 0 && placeNumber < 5)
+        if (placeNumber is >= 0 and < TopRecordsAmount)
         {
             records.Insert(placeNumber, new RecordTime(name ?? "Unknown", elapsedTime));
 
@@ -403,5 +405,4 @@ public class Game
 
         File.WriteAllText("records.txt", text);
     }
-
 }
