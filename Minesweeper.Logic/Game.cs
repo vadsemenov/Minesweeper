@@ -15,7 +15,7 @@ public class Game
 
     public GameStatus GameStatus { get; private set; }
 
-    private readonly Random _random = new(1234);
+    private readonly Random _random = new();
 
     public Game(int rowsAmount, int columnsAmount, int mineAmount)
     {
@@ -118,11 +118,11 @@ public class Game
 
     private bool CheckWinGameStatus()
     {
-        for (var i = 0; i < RowsAmount; i++)
+        for (var y = 0; y < RowsAmount; y++)
         {
-            for (var j = 0; j < ColumnsAmount; j++)
+            for (var x = 0; x < ColumnsAmount; x++)
             {
-                if (Field[i, j].Status != CellStatus.OpenedCell && Field[i, j].CellContent != CellContent.Mine)
+                if (Field[y, x].Status != CellStatus.OpenedCell && Field[y, x].CellContent != CellContent.Mine)
                 {
                     return false;
                 }
@@ -137,58 +137,58 @@ public class Game
         var visitQueue = new Queue<(int, int)>();
         var visited = new List<(int, int)>();
 
-        var currentCoord = (rowCount, columnCount);
+        var currentCoordinate = (rowCount, columnCount);
 
-        visitQueue.Enqueue(currentCoord);
+        visitQueue.Enqueue(currentCoordinate);
 
         while (visitQueue.Count > 0)
         {
-            currentCoord = visitQueue.Dequeue();
+            currentCoordinate = visitQueue.Dequeue();
 
-            if (visited.Contains((currentCoord.rowCount, currentCoord.columnCount)))
+            if (visited.Contains((currentCoordinate.rowCount, currentCoordinate.columnCount)))
             {
                 continue;
             }
 
-            visited.Add(currentCoord);
+            visited.Add(currentCoordinate);
 
-            var currentCell = Field[currentCoord.rowCount, currentCoord.columnCount];
+            var currentCell = Field[currentCoordinate.rowCount, currentCoordinate.columnCount];
 
             if (currentCell.CellContent == CellContent.Empty && currentCell.Status != CellStatus.Flag)
             {
                 currentCell.Status = CellStatus.OpenedCell;
 
-                AddNeighboringCellsToQueue(currentCoord.rowCount, currentCoord.columnCount, visitQueue, visited);
+                AddNeighboringCellsToQueue(currentCoordinate.rowCount, currentCoordinate.columnCount, visitQueue, visited);
             }
         }
     }
 
     private void AddNeighboringCellsToQueue(int rowCount, int columnCount, Queue<(int, int)> visitQueue, List<(int, int)> visited)
     {
-        for (var i = rowCount - 1; i <= rowCount + 1; i++)
+        for (var y = rowCount - 1; y <= rowCount + 1; y++)
         {
-            for (var j = columnCount - 1; j <= columnCount + 1; j++)
+            for (var x = columnCount - 1; x <= columnCount + 1; x++)
             {
-                if (i == rowCount && j == columnCount)
+                if (y == rowCount && x == columnCount)
                 {
                     continue;
                 }
 
-                if (i < 0 || j < 0 || i >= RowsAmount || j >= ColumnsAmount)
+                if (y < 0 || x < 0 || y >= RowsAmount || x >= ColumnsAmount)
                 {
                     continue;
                 }
 
-                if (visited.Contains((i, j)))
+                if (visited.Contains((y, x)))
                 {
                     continue;
                 }
 
-                visitQueue.Enqueue((i, j));
+                visitQueue.Enqueue((y, x));
 
-                if (Field[i, j].CellContent != CellContent.Mine)
+                if (Field[y, x].CellContent != CellContent.Mine)
                 {
-                    Field[i, j].Status = CellStatus.OpenedCell;
+                    Field[y, x].Status = CellStatus.OpenedCell;
                 }
             }
         }
@@ -196,11 +196,11 @@ public class Game
 
     private void OpenAllCells()
     {
-        for (var i = 0; i < RowsAmount; i++)
+        for (var y = 0; y < RowsAmount; y++)
         {
-            for (var j = 0; j < ColumnsAmount; j++)
+            for (var x = 0; x < ColumnsAmount; x++)
             {
-                Field[i, j].Status = CellStatus.OpenedCell;
+                Field[y, x].Status = CellStatus.OpenedCell;
             }
         }
     }
@@ -214,11 +214,11 @@ public class Game
 
     private void CreateField()
     {
-        for (var i = 0; i < RowsAmount; i++)
+        for (var y = 0; y < RowsAmount; y++)
         {
-            for (var j = 0; j < ColumnsAmount; j++)
+            for (var x = 0; x < ColumnsAmount; x++)
             {
-                Field[i, j] = new Cell
+                Field[y, x] = new Cell
                 {
                     CellContent = CellContent.Empty,
                     Status = CellStatus.NotOpenedCell
@@ -246,13 +246,13 @@ public class Game
 
     private void PlaceDigits()
     {
-        for (var i = 0; i < RowsAmount; i++)
+        for (var y = 0; y < RowsAmount; y++)
         {
-            for (var j = 0; j < ColumnsAmount; j++)
+            for (var x = 0; x < ColumnsAmount; x++)
             {
-                if (Field[i, j].CellContent == CellContent.Empty)
+                if (Field[y, x].CellContent == CellContent.Empty)
                 {
-                    PlaceDigitsInsideField(i, j);
+                    PlaceDigitsInsideField(y, x);
                 }
             }
         }
@@ -262,16 +262,16 @@ public class Game
     {
         var neighboringMinesAmount = 0;
 
-        for (var k = i - 1; k <= i + 1; k++)
+        for (var rowCount = i - 1; rowCount <= i + 1; rowCount++)
         {
-            for (var l = j - 1; l <= j + 1; l++)
+            for (var columnCount = j - 1; columnCount <= j + 1; columnCount++)
             {
-                if (k < 0 || l < 0 || k > RowsAmount - 1 || l > ColumnsAmount - 1)
+                if (rowCount < 0 || columnCount < 0 || rowCount > RowsAmount - 1 || columnCount > ColumnsAmount - 1)
                 {
                     continue;
                 }
 
-                if (Field[k, l].CellContent == CellContent.Mine)
+                if (Field[rowCount, columnCount].CellContent == CellContent.Mine)
                 {
                     neighboringMinesAmount++;
                 }
@@ -285,17 +285,17 @@ public class Game
     {
         var stringBuilder = new StringBuilder();
 
-        for (var i = 0; i < RowsAmount; i++)
+        for (var y = 0; y < RowsAmount; y++)
         {
-            for (var j = 0; j < ColumnsAmount; j++)
+            for (var x = 0; x < ColumnsAmount; x++)
             {
-                if (Field[i, j].CellContent == CellContent.Mine)
+                if (Field[y, x].CellContent == CellContent.Mine)
                 {
                     stringBuilder.Append("*" + " ");
                 }
                 else
                 {
-                    stringBuilder.Append((int)Field[i, j].CellContent + " ");
+                    stringBuilder.Append((int)Field[y, x].CellContent + " ");
                 }
             }
 
@@ -309,11 +309,11 @@ public class Game
     {
         var stringBuilder = new StringBuilder();
 
-        for (var i = 0; i < RowsAmount; i++)
+        for (var y = 0; y < RowsAmount; y++)
         {
-            for (var j = 0; j < ColumnsAmount; j++)
+            for (var x = 0; x < ColumnsAmount; x++)
             {
-                stringBuilder.Append((int)Field[i, j].Status + " ");
+                stringBuilder.Append((int)Field[y, x].Status + " ");
             }
 
             stringBuilder.AppendLine();

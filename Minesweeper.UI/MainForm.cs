@@ -43,12 +43,12 @@ namespace Minesweeper.UI
 
             SuspendLayout();
 
-            for (var i = 0; i < _controller.RowsAmount; i++)
+            for (var y = 0; y < _controller.RowsAmount; y++)
             {
-                for (var j = 0; j < _controller.ColumnsAmount; j++)
+                for (var x = 0; x < _controller.ColumnsAmount; x++)
                 {
-                    var button = new ExtendedButton(i, j);
-                    button.Name = $"{i},{j}";
+                    var button = new ExtendedButton(y, x);
+                    button.Name = $"{y},{x}";
                     button.Width = ButtonWidth;
                     button.Height = ButtonHeight;
                     button.Margin = Padding.Empty;
@@ -56,9 +56,9 @@ namespace Minesweeper.UI
                     button.Image = Properties.Resources.NotOpened;
                     button.MouseUp += ClickMouse;
 
-                    _buttonsField[i, j] = button;
+                    _buttonsField[y, x] = button;
 
-                    tableLayoutPanel1.Controls.Add(button, j, i);
+                    tableLayoutPanel1.Controls.Add(button, x, y);
                 }
             }
 
@@ -67,56 +67,56 @@ namespace Minesweeper.UI
 
         private void RedrawFieldEvent()
         {
-            for (var i = 0; i < _controller.RowsAmount; i++)
+            for (var y = 0; y < _controller.RowsAmount; y++)
             {
-                for (var j = 0; j < _controller.ColumnsAmount; j++)
+                for (var x = 0; x < _controller.ColumnsAmount; x++)
                 {
-                    var cell = _controller.Field[i, j];
+                    var cell = _controller.Field[y, x];
 
                     if (cell.Status == CellStatus.NotOpenedCell)
                     {
-                        _buttonsField[i, j].Image = Properties.Resources.NotOpened;
+                        _buttonsField[y, x].Image = Properties.Resources.NotOpened;
                     }
                     else if (cell.Status == CellStatus.Flag)
                     {
-                        _buttonsField[i, j].Image = Properties.Resources.Flaged;
+                        _buttonsField[y, x].Image = Properties.Resources.Flaged;
                     }
                     else
                     {
                         switch (cell.CellContent)
                         {
                             case CellContent.Mine:
-                                _buttonsField[i, j].Image = Properties.Resources.Mine;
+                                _buttonsField[y, x].Image = Properties.Resources.Mine;
                                 break;
                             case CellContent.NearOneMine:
-                                _buttonsField[i, j].Image = Properties.Resources.Opened1;
+                                _buttonsField[y, x].Image = Properties.Resources.Opened1;
                                 break;
                             case CellContent.NearTwoMine:
-                                _buttonsField[i, j].Image = Properties.Resources.Opened2;
+                                _buttonsField[y, x].Image = Properties.Resources.Opened2;
                                 break;
                             case CellContent.NearThreeMine:
-                                _buttonsField[i, j].Image = Properties.Resources.Opened3;
+                                _buttonsField[y, x].Image = Properties.Resources.Opened3;
                                 break;
                             case CellContent.NearFourMine:
-                                _buttonsField[i, j].Image = Properties.Resources.Opened4;
+                                _buttonsField[y, x].Image = Properties.Resources.Opened4;
                                 break;
                             case CellContent.NearFiveMine:
-                                _buttonsField[i, j].Image = Properties.Resources.Opened5;
+                                _buttonsField[y, x].Image = Properties.Resources.Opened5;
                                 break;
                             case CellContent.NearSixMine:
-                                _buttonsField[i, j].Image = Properties.Resources.Opened6;
+                                _buttonsField[y, x].Image = Properties.Resources.Opened6;
                                 break;
                             case CellContent.NearSevenMine:
-                                _buttonsField[i, j].Image = Properties.Resources.Opened7;
+                                _buttonsField[y, x].Image = Properties.Resources.Opened7;
                                 break;
                             case CellContent.NearEightMine:
-                                _buttonsField[i, j].Image = Properties.Resources.Opened8;
+                                _buttonsField[y, x].Image = Properties.Resources.Opened8;
                                 break;
                             case CellContent.ExplodedMine:
-                                _buttonsField[i, j].Image = Properties.Resources.ExplodedMine;
+                                _buttonsField[y, x].Image = Properties.Resources.ExplodedMine;
                                 break;
                             case CellContent.Empty:
-                                _buttonsField[i, j].Image = Properties.Resources.OpenedEmpty;
+                                _buttonsField[y, x].Image = Properties.Resources.OpenedEmpty;
                                 break;
                         }
                     }
