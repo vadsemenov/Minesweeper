@@ -2,7 +2,7 @@
 
 public enum CellContent
 {
-    EmptyCell = 0,
+    Empty = 0,
 
     NearOneMine = 1,
 

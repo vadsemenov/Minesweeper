@@ -8,5 +8,5 @@ public enum GameStatus
 
     Win = 2,
 
-    Lose = 3,
+    Lose = 3
 }

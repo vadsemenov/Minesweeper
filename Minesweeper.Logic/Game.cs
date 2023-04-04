@@ -61,18 +61,18 @@ public class Game
 
     public void TrySetOrRemoveFlag(Cell cell)
     {
-        if (cell.CellStatus == CellStatus.OpenedCell)
+        if (cell.Status == CellStatus.OpenedCell)
         {
             return;
         }
 
-        if (cell.CellStatus == CellStatus.Flag)
+        if (cell.Status == CellStatus.Flag)
         {
-            cell.CellStatus = CellStatus.NotOpenedCell;
+            cell.Status = CellStatus.NotOpenedCell;
             return;
         }
 
-        cell.CellStatus = CellStatus.Flag;
+        cell.Status = CellStatus.Flag;
     }
 
     public GameStatus TryOpenCell(int rowCount, int columnCount)
@@ -82,12 +82,12 @@ public class Game
             return GameStatus;
         }
 
-        if (Field[rowCount, columnCount].CellStatus == CellStatus.OpenedCell)
+        if (Field[rowCount, columnCount].Status == CellStatus.OpenedCell)
         {
             return GameStatus;
         }
 
-        if (Field[rowCount, columnCount].CellStatus == CellStatus.Flag)
+        if (Field[rowCount, columnCount].Status == CellStatus.Flag)
         {
             return GameStatus;
         }
@@ -103,7 +103,7 @@ public class Game
             return GameStatus;
         }
 
-        Field[rowCount, columnCount].CellStatus = CellStatus.OpenedCell;
+        Field[rowCount, columnCount].Status = CellStatus.OpenedCell;
 
         OpenCellsInBreadth(rowCount, columnCount);
 
@@ -122,7 +122,7 @@ public class Game
         {
             for (var j = 0; j < ColumnsAmount; j++)
             {
-                if (Field[i, j].CellStatus != CellStatus.OpenedCell && Field[i, j].CellContent != CellContent.Mine)
+                if (Field[i, j].Status != CellStatus.OpenedCell && Field[i, j].CellContent != CellContent.Mine)
                 {
                     return false;
                 }
@@ -154,9 +154,9 @@ public class Game
 
             var currentCell = Field[currentCoord.rowCount, currentCoord.columnCount];
 
-            if (currentCell.CellContent == CellContent.EmptyCell && currentCell.CellStatus != CellStatus.Flag)
+            if (currentCell.CellContent == CellContent.Empty && currentCell.Status != CellStatus.Flag)
             {
-                currentCell.CellStatus = CellStatus.OpenedCell;
+                currentCell.Status = CellStatus.OpenedCell;
 
                 AddNeighboringCellsToQueue(currentCoord.rowCount, currentCoord.columnCount, visitQueue, visited);
             }
@@ -188,7 +188,7 @@ public class Game
 
                 if (Field[i, j].CellContent != CellContent.Mine)
                 {
-                    Field[i, j].CellStatus = CellStatus.OpenedCell;
+                    Field[i, j].Status = CellStatus.OpenedCell;
                 }
             }
         }
@@ -200,7 +200,7 @@ public class Game
         {
             for (var j = 0; j < ColumnsAmount; j++)
             {
-                Field[i, j].CellStatus = CellStatus.OpenedCell;
+                Field[i, j].Status = CellStatus.OpenedCell;
             }
         }
     }
@@ -220,8 +220,8 @@ public class Game
             {
                 Field[i, j] = new Cell
                 {
-                    CellContent = CellContent.EmptyCell,
-                    CellStatus = CellStatus.NotOpenedCell
+                    CellContent = CellContent.Empty,
+                    Status = CellStatus.NotOpenedCell
                 };
             }
         }
@@ -250,7 +250,7 @@ public class Game
         {
             for (var j = 0; j < ColumnsAmount; j++)
             {
-                if (Field[i, j].CellContent == CellContent.EmptyCell)
+                if (Field[i, j].CellContent == CellContent.Empty)
                 {
                     PlaceDigitsInsideField(i, j);
                 }
@@ -313,7 +313,7 @@ public class Game
         {
             for (var j = 0; j < ColumnsAmount; j++)
             {
-                stringBuilder.Append((int)Field[i, j].CellStatus + " ");
+                stringBuilder.Append((int)Field[i, j].Status + " ");
             }
 
             stringBuilder.AppendLine();

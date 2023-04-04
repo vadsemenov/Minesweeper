@@ -73,11 +73,11 @@ namespace Minesweeper.UI
                 {
                     var cell = _controller.Field[i, j];
 
-                    if (cell.CellStatus == CellStatus.NotOpenedCell)
+                    if (cell.Status == CellStatus.NotOpenedCell)
                     {
                         _buttonsField[i, j].Image = Properties.Resources.NotOpened;
                     }
-                    else if (cell.CellStatus == CellStatus.Flag)
+                    else if (cell.Status == CellStatus.Flag)
                     {
                         _buttonsField[i, j].Image = Properties.Resources.Flaged;
                     }
@@ -115,7 +115,7 @@ namespace Minesweeper.UI
                             case CellContent.ExplodedMine:
                                 _buttonsField[i, j].Image = Properties.Resources.ExplodedMine;
                                 break;
-                            case CellContent.EmptyCell:
+                            case CellContent.Empty:
                                 _buttonsField[i, j].Image = Properties.Resources.OpenedEmpty;
                                 break;
                         }

@@ -6,5 +6,5 @@ public record Cell
 {
     public CellContent CellContent { get; set; }
 
-    public CellStatus CellStatus { get; set; }
+    public CellStatus Status { get; set; }
 }
