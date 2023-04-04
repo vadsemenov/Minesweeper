@@ -1,7 +1,5 @@
-﻿using System.Diagnostics;
-using Minesweeper.Logic;
+﻿using Minesweeper.Logic;
 using Minesweeper.Logic.Enums;
-using System.Text.Json;
 
 namespace Minesweeper.UI.Controller;
 public class MinesweeperController
@@ -24,6 +22,8 @@ public class MinesweeperController
 
     public int GetNewRecordPlace => _game.GetNewRecordPlace();
 
+    private bool _isFirstClick = true;
+
     public MinesweeperController(GameDifficulty gameDifficulty, Action redrawFieldEvent)
     {
         RedrawFieldEvent = redrawFieldEvent;
@@ -35,6 +35,16 @@ public class MinesweeperController
 
     public void TryOpenCell(int rowCount, int columnCount)
     {
+        if (_isFirstClick)
+        {
+            while (Field[rowCount, columnCount].CellContent != CellContent.Empty)
+            {
+                _game.GenerateNewField();
+            }
+
+            _isFirstClick = false;
+        }
+
         _game.TryOpenCell(rowCount, columnCount);
         RedrawFieldEvent?.Invoke();
     }

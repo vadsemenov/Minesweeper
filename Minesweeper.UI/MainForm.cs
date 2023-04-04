@@ -17,7 +17,15 @@ public partial class MainForm : Form
     {
         InitializeComponent();
 
+        timer.Tick += TimerTick;
+        timer.Interval = 1000;
+
         InitializeNewField(GameDifficulty.Easy);
+    }
+
+    private void TimerTick(object sender, EventArgs e)
+    {
+        timeLabel.Text = _controller.ElapsedTime.ToString("#####");
     }
 
     private void InitializeNewField(GameDifficulty gameDifficulty)
@@ -29,6 +37,8 @@ public partial class MainForm : Form
         SetFormSize();
 
         _isGameOver = false;
+
+        timer.Start();
     }
 
     private void CreateFieldView()
@@ -128,7 +138,7 @@ public partial class MainForm : Form
     private void SetFormSize()
     {
         var width = tableLayoutPanel1.Bounds.Width + 20;
-        var height = tableLayoutPanel1.Bounds.Height + 50 + 20;
+        var height = tableLayoutPanel1.Bounds.Height + 90 + 20;
 
         Size = new Size(width, height);
     }
@@ -196,7 +206,7 @@ public partial class MainForm : Form
         }
     }
 
-    private void newGameToolStripMenuItem_Click(object sender, EventArgs e)
+    private void CreateNewGame()
     {
         var newGameForm = new NewGameForm();
 
@@ -204,6 +214,11 @@ public partial class MainForm : Form
         {
             InitializeNewField(newGameForm.GameDifficulty);
         }
+    }
+
+    private void newGameToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        CreateNewGame();
     }
 
     private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -222,5 +237,10 @@ public partial class MainForm : Form
     private void exitToolStripMenuItem_Click(object sender, EventArgs e)
     {
         Dispose();
+    }
+
+    private void newGameButton_Click(object sender, EventArgs e)
+    {
+        CreateNewGame();
     }
 }
