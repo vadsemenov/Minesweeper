@@ -24,8 +24,9 @@ public class Game
             if (value is GameStatus.Lose or GameStatus.Win)
             {
                 _timer.Stop();
-                _gameStatus = value;
             }
+
+            _gameStatus = value;
         }
     }
 
@@ -99,9 +100,101 @@ public class Game
         cell.Status = CellStatus.Flag;
     }
 
+    private bool CheckCellIsInsideField(int rowCount, int columnCount)
+    {
+        if (rowCount < 0 || columnCount < 0 || rowCount >= RowsAmount || columnCount >= ColumnsAmount)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public GameStatus TryOpenNeighboringCells(int rowCount, int columnCount)
+    {
+        if (!CheckCellIsInsideField(rowCount, columnCount))
+        {
+            return GameStatus;
+        }
+
+        var currentCell = Field[rowCount, columnCount];
+
+        if (currentCell.Status == CellStatus.NotOpenedCell ||
+            currentCell.CellContent == CellContent.Empty && currentCell.Status == CellStatus.OpenedCell ||
+            currentCell.Status == CellStatus.Flag)
+        {
+            return GameStatus;
+        }
+
+        var flagedNeighboringCellsAmount = GetFlagedNeighboringCellsAmount(rowCount, columnCount);
+
+        if (flagedNeighboringCellsAmount != 0 && flagedNeighboringCellsAmount == (int)currentCell.CellContent)
+        {
+            return OpenNieghboringCells(rowCount, columnCount);
+        }
+
+        return GameStatus;
+    }
+
+    private GameStatus OpenNieghboringCells(int rowCount, int columnCount)
+    {
+        for (var y = rowCount - 1; y <= rowCount + 1; y++)
+        {
+            for (var x = columnCount - 1; x <= columnCount + 1; x++)
+            {
+                if (y == rowCount && x == columnCount)
+                {
+                    continue;
+                }
+
+                if (!CheckCellIsInsideField(y, x))
+                {
+                    continue;
+                }
+
+                var gameStatus = TryOpenCell(y, x);
+
+                if (gameStatus == GameStatus.Lose || gameStatus == GameStatus.Win)
+                {
+                    return GameStatus;
+                }
+            }
+        }
+
+        return GameStatus;
+    }
+
+    private int GetFlagedNeighboringCellsAmount(int rowCount, int columnCount)
+    {
+        var flagedCellsAmount = 0;
+
+        for (var y = rowCount - 1; y <= rowCount + 1; y++)
+        {
+            for (var x = columnCount - 1; x <= columnCount + 1; x++)
+            {
+                if (!CheckCellIsInsideField(y, x))
+                {
+                    continue;
+                }
+
+                if (y == rowCount && x == columnCount)
+                {
+                    continue;
+                }
+
+                if (Field[y, x].Status == CellStatus.Flag)
+                {
+                    flagedCellsAmount++;
+                }
+            }
+        }
+
+        return flagedCellsAmount;
+    }
+
     public GameStatus TryOpenCell(int rowCount, int columnCount)
     {
-        if (rowCount < 0 || columnCount < 0 || rowCount >= Field.GetLength(1) || columnCount >= Field.GetLength(0))
+        if (!CheckCellIsInsideField(rowCount, columnCount))
         {
             return GameStatus;
         }
@@ -198,7 +291,7 @@ public class Game
                     continue;
                 }
 
-                if (y < 0 || x < 0 || y >= RowsAmount || x >= ColumnsAmount)
+                if (!CheckCellIsInsideField(y, x))
                 {
                     continue;
                 }
@@ -290,7 +383,7 @@ public class Game
         {
             for (var columnCount = j - 1; columnCount <= j + 1; columnCount++)
             {
-                if (rowCount < 0 || columnCount < 0 || rowCount >= RowsAmount || columnCount >= ColumnsAmount)
+                if (!CheckCellIsInsideField(rowCount, columnCount))
                 {
                     continue;
                 }

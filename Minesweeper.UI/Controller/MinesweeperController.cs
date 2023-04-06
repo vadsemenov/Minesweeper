@@ -33,6 +33,12 @@ public class MinesweeperController
         _game = new Game(gameDifficulty);
     }
 
+    public void TryOpenNeighboringCells(int rowCount, int columnCount)
+    {
+        _game.TryOpenNeighboringCells(rowCount, columnCount);
+        RedrawFieldEvent?.Invoke();
+    }
+
     public void TryOpenCell(int rowCount, int columnCount)
     {
         if (_isFirstClick)

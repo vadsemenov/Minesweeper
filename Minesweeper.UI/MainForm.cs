@@ -156,16 +156,20 @@ public partial class MainForm : Form
         {
             _controller.TrySetRemoveFlag(_controller.Field[button.RowIndex, button.ColumnIndex]);
         }
+        else if (e.Button == MouseButtons.Middle)
+        {
+           _controller.TryOpenNeighboringCells(button.RowIndex, button.ColumnIndex);
+        }
         else
         {
             _controller.TryOpenCell(button.RowIndex, button.ColumnIndex);
+        }
 
-            if (_controller.GameStatus is GameStatus.Win or GameStatus.Lose)
-            {
-                CheckWinOrLoseGame();
+        if (_controller.GameStatus is GameStatus.Win or GameStatus.Lose)
+        {
+            CheckWinOrLoseGame();
 
-                _isGameOver = true;
-            }
+            _isGameOver = true;
         }
     }
 

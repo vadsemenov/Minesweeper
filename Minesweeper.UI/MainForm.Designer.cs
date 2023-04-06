@@ -117,12 +117,13 @@
             // newGameButton
             // 
             this.newGameButton.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.newGameButton.BackgroundImage = global::Minesweeper.UI.Properties.Resources.smile;
+            this.newGameButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.newGameButton.Location = new System.Drawing.Point(331, 33);
             this.newGameButton.Name = "newGameButton";
             this.newGameButton.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.newGameButton.Size = new System.Drawing.Size(91, 33);
+            this.newGameButton.Size = new System.Drawing.Size(36, 36);
             this.newGameButton.TabIndex = 2;
-            this.newGameButton.Text = "New Game";
             this.newGameButton.UseVisualStyleBackColor = true;
             this.newGameButton.Click += new System.EventHandler(this.newGameButton_Click);
             // 
