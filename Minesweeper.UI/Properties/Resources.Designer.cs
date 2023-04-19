@@ -73,9 +73,9 @@ namespace Minesweeper.UI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Flaged {
+        internal static System.Drawing.Bitmap Flagged {
             get {
-                object obj = ResourceManager.GetObject("Flaged", resourceCulture);
+                object obj = ResourceManager.GetObject("Flagged", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

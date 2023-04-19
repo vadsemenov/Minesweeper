@@ -88,7 +88,7 @@ public partial class MainForm : Form
                 }
                 else if (cell.Status == CellStatus.Flag)
                 {
-                    _buttonsField[y, x].Image = Properties.Resources.Flaged;
+                    _buttonsField[y, x].Image = Properties.Resources.Flagged;
                 }
                 else
                 {

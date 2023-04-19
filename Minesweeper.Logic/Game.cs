@@ -34,9 +34,11 @@ public class Game
 
     private readonly Stopwatch _timer = new();
 
-    public double ElapsedTime => (double)_timer.ElapsedMilliseconds / 1000;
+    private const string RecordsFilePath = "records.txt";
 
     private const int TopRecordsAmount = 5;
+
+    public double ElapsedTime => (double)_timer.ElapsedMilliseconds / 1000;
 
     public Game(int rowsAmount, int columnsAmount, int mineAmount)
     {
@@ -102,12 +104,7 @@ public class Game
 
     private bool CheckCellIsInsideField(int rowCount, int columnCount)
     {
-        if (rowCount < 0 || columnCount < 0 || rowCount >= RowsAmount || columnCount >= ColumnsAmount)
-        {
-            return false;
-        }
-
-        return true;
+        return rowCount >= 0 && columnCount >= 0 && rowCount < RowsAmount && columnCount < ColumnsAmount;
     }
 
     public GameStatus TryOpenNeighboringCells(int rowCount, int columnCount)
@@ -126,9 +123,9 @@ public class Game
             return GameStatus;
         }
 
-        var flagedNeighboringCellsAmount = GetFlagedNeighboringCellsAmount(rowCount, columnCount);
+        var flaggedNeighboringCellsAmount = GetFlaggedNeighboringCellsAmount(rowCount, columnCount);
 
-        if (flagedNeighboringCellsAmount != 0 && flagedNeighboringCellsAmount == (int)currentCell.CellContent)
+        if (flaggedNeighboringCellsAmount != 0 && flaggedNeighboringCellsAmount == (int)currentCell.CellContent)
         {
             return OpenNieghboringCells(rowCount, columnCount);
         }
@@ -164,9 +161,9 @@ public class Game
         return GameStatus;
     }
 
-    private int GetFlagedNeighboringCellsAmount(int rowCount, int columnCount)
+    private int GetFlaggedNeighboringCellsAmount(int rowCount, int columnCount)
     {
-        var flagedCellsAmount = 0;
+        var flaggedCellsAmount = 0;
 
         for (var y = rowCount - 1; y <= rowCount + 1; y++)
         {
@@ -184,12 +181,12 @@ public class Game
 
                 if (Field[y, x].Status == CellStatus.Flag)
                 {
-                    flagedCellsAmount++;
+                    flaggedCellsAmount++;
                 }
             }
         }
 
-        return flagedCellsAmount;
+        return flaggedCellsAmount;
     }
 
     public GameStatus TryOpenCell(int rowCount, int columnCount)
@@ -412,7 +409,8 @@ public class Game
                 }
                 else
                 {
-                    stringBuilder.Append((int)Field[y, x].CellContent + " ");
+                    stringBuilder.Append((int)Field[y, x].CellContent);
+                    stringBuilder.Append(' ');
                 }
             }
 
@@ -430,7 +428,8 @@ public class Game
         {
             for (var x = 0; x < ColumnsAmount; x++)
             {
-                stringBuilder.Append((int)Field[y, x].Status + " ");
+                stringBuilder.Append((int)Field[y, x].Status);
+                stringBuilder.Append(' ');
             }
 
             stringBuilder.AppendLine();
@@ -469,14 +468,14 @@ public class Game
         return false;
     }
 
-    public List<RecordTime> ReadRecordsFromFile()
+    public static List<RecordTime> ReadRecordsFromFile()
     {
-        if (!File.Exists("records.txt"))
+        if (!File.Exists(RecordsFilePath))
         {
             return new List<RecordTime>();
         }
 
-        var text = File.ReadAllText("records.txt");
+        var text = File.ReadAllText(RecordsFilePath);
 
         List<RecordTime> records;
 
@@ -492,10 +491,10 @@ public class Game
         return records?.OrderBy(rt => rt.Time).ToList();
     }
 
-    private void WriteRecordsToFile(List<RecordTime> recordsList)
+    private static void WriteRecordsToFile(List<RecordTime> recordsList)
     {
         var text = JsonSerializer.Serialize(recordsList);
 
-        File.WriteAllText("records.txt", text);
+        File.WriteAllText(RecordsFilePath, text);
     }
 }
