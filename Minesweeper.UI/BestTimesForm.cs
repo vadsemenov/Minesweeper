@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 using Minesweeper.Logic;
-using Minesweeper.UI.Controller;
 
 namespace Minesweeper.UI
 {
@@ -38,7 +37,7 @@ namespace Minesweeper.UI
             }
         }
 
-        private void button1_Click(object sender, System.EventArgs e)
+        private void okButton_Click(object sender, EventArgs e)
         {
             Dispose();
         }

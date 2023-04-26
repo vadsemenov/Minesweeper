@@ -158,7 +158,7 @@ public partial class MainForm : Form
         }
         else if (e.Button == MouseButtons.Middle)
         {
-           _controller.TryOpenNeighboringCells(button.RowIndex, button.ColumnIndex);
+            _controller.TryOpenNeighboringCells(button.RowIndex, button.ColumnIndex);
         }
         else
         {
