@@ -100,25 +100,25 @@ public partial class MainForm : Form
                         case CellContent.NearOneMine:
                             _buttonsField[y, x].Image = Properties.Resources.Opened1;
                             break;
-                        case CellContent.NearTwoMine:
+                        case CellContent.NearTwoMines:
                             _buttonsField[y, x].Image = Properties.Resources.Opened2;
                             break;
-                        case CellContent.NearThreeMine:
+                        case CellContent.NearThreeMines:
                             _buttonsField[y, x].Image = Properties.Resources.Opened3;
                             break;
-                        case CellContent.NearFourMine:
+                        case CellContent.NearFourMines:
                             _buttonsField[y, x].Image = Properties.Resources.Opened4;
                             break;
-                        case CellContent.NearFiveMine:
+                        case CellContent.NearFiveMines:
                             _buttonsField[y, x].Image = Properties.Resources.Opened5;
                             break;
-                        case CellContent.NearSixMine:
+                        case CellContent.NearSixMines:
                             _buttonsField[y, x].Image = Properties.Resources.Opened6;
                             break;
-                        case CellContent.NearSevenMine:
+                        case CellContent.NearSevenMines:
                             _buttonsField[y, x].Image = Properties.Resources.Opened7;
                             break;
-                        case CellContent.NearEightMine:
+                        case CellContent.NearEightMines:
                             _buttonsField[y, x].Image = Properties.Resources.Opened8;
                             break;
                         case CellContent.ExplodedMine:

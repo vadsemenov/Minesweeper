@@ -6,19 +6,19 @@ public enum CellContent
 
     NearOneMine = 1,
 
-    NearTwoMine = 2,
+    NearTwoMines = 2,
 
-    NearThreeMine = 3,
+    NearThreeMines = 3,
 
-    NearFourMine = 4,
+    NearFourMines = 4,
 
-    NearFiveMine = 5,
+    NearFiveMines = 5,
 
-    NearSixMine = 6,
+    NearSixMines = 6,
 
-    NearSevenMine = 7,
+    NearSevenMines = 7,
 
-    NearEightMine = 8,
+    NearEightMines = 8,
 
     Mine = 9,
 

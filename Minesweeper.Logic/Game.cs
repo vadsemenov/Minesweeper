@@ -1,17 +1,16 @@
 ﻿using System.Diagnostics;
 using System.Text;
-using System.Text.Json;
 using Minesweeper.Logic.Enums;
 
 namespace Minesweeper.Logic;
 
 public class Game
 {
-    public Cell[,] Field { get; private set; }
-    public int RowsAmount { get; private set; }
-    public int ColumnsAmount { get; private set; }
+    public Cell[,] Field { get; }
+    public int RowsAmount { get; }
+    public int ColumnsAmount { get; }
 
-    public int MineAmount { get; private set; }
+    public int MineAmount { get; }
 
     private GameStatus _gameStatus;
 

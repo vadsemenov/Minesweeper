@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using Minesweeper.Logic.Enums;
 
 namespace Minesweeper.Logic;
 
@@ -8,11 +9,11 @@ public static class RecordsService
 
     private const int TopRecordsAmount = 5;
 
-    public static int GetNewRecordPlace(double elapsedTime)
+    public static int GetNewRecordPlace(GameDifficulty gameDifficulty, double elapsedTime)
     {
         var records = ReadRecordsFromFile();
 
-        var insertIndex = records.TakeWhile(rt => rt.Time <= elapsedTime).Count();
+        var insertIndex = records.Where(x => x.GameDifficulty == gameDifficulty).TakeWhile(rt => rt.Time <= elapsedTime).Count();
 
         if (insertIndex < TopRecordsAmount)
         {
@@ -22,13 +23,13 @@ public static class RecordsService
         return -1;
     }
 
-    public static bool AddNewRecord(int placeNumber, string name, double elapsedTime)
+    public static bool AddNewRecord(int placeNumber, GameDifficulty gameDifficulty, string name, double elapsedTime)
     {
         var records = ReadRecordsFromFile();
 
         if (placeNumber is >= 0 and < TopRecordsAmount)
         {
-            records.Insert(placeNumber, new RecordTime(name ?? "Unknown", elapsedTime));
+            records.Insert(placeNumber, new RecordTime(gameDifficulty, name ?? "Unknown", elapsedTime));
 
             WriteRecordsToFile(records);
 

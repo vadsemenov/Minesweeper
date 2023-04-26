@@ -5,7 +5,7 @@ namespace Minesweeper.UI.Controller;
 public class MinesweeperController
 {
     private readonly Game _game;
-    public GameDifficulty GameDifficulty { get; private set; }
+    public GameDifficulty GameDifficulty { get; }
 
     public int RowsAmount => _game.RowsAmount;
     public int ColumnsAmount => _game.ColumnsAmount;
@@ -18,9 +18,9 @@ public class MinesweeperController
 
     public double ElapsedTime => _game.ElapsedTime;
 
-    public List<RecordTime> RecordsTimes => RecordsService.ReadRecordsFromFile();
+    public List<RecordTime> RecordsTimes => RecordsService.ReadRecordsFromFile().Where(x => x.GameDifficulty == GameDifficulty).ToList();
 
-    public int GetNewRecordPlace => RecordsService.GetNewRecordPlace(_game.ElapsedTime);
+    public int GetNewRecordPlace => RecordsService.GetNewRecordPlace(GameDifficulty, _game.ElapsedTime);
 
     private bool _isFirstClick = true;
 
@@ -57,7 +57,7 @@ public class MinesweeperController
 
     public bool AddNewRecord(int placeNumber, string name, double elapsedTime)
     {
-        return RecordsService.AddNewRecord(placeNumber, name, elapsedTime);
+        return RecordsService.AddNewRecord(placeNumber, GameDifficulty, name, elapsedTime);
     }
 
     public void TrySetRemoveFlag(Cell cell)

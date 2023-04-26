@@ -1,3 +1,5 @@
-﻿namespace Minesweeper.Logic;
+﻿using Minesweeper.Logic.Enums;
 
-public record RecordTime(string Name, double Time);
+namespace Minesweeper.Logic;
+
+public record RecordTime(GameDifficulty GameDifficulty, string Name, double Time);
