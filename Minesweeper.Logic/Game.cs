@@ -34,10 +34,6 @@ public class Game
 
     private readonly Stopwatch _timer = new();
 
-    private const string RecordsFilePath = "records.txt";
-
-    private const int TopRecordsAmount = 5;
-
     public double ElapsedTime => (double)_timer.ElapsedMilliseconds / 1000;
 
     public Game(int rowsAmount, int columnsAmount, int mineAmount)
@@ -127,13 +123,13 @@ public class Game
 
         if (flaggedNeighboringCellsAmount != 0 && flaggedNeighboringCellsAmount == (int)currentCell.CellContent)
         {
-            return OpenNieghboringCells(rowCount, columnCount);
+            return OpenNeighboringCells(rowCount, columnCount);
         }
 
         return GameStatus;
     }
 
-    private GameStatus OpenNieghboringCells(int rowCount, int columnCount)
+    private GameStatus OpenNeighboringCells(int rowCount, int columnCount)
     {
         for (var y = rowCount - 1; y <= rowCount + 1; y++)
         {
@@ -436,65 +432,5 @@ public class Game
         }
 
         return stringBuilder.ToString();
-    }
-
-    public int GetNewRecordPlace()
-    {
-        var records = ReadRecordsFromFile();
-
-        var insertIndex = records.TakeWhile(rt => rt.Time <= ElapsedTime).Count();
-
-        if (insertIndex < TopRecordsAmount)
-        {
-            return insertIndex;
-        }
-
-        return -1;
-    }
-
-    public bool AddNewRecord(int placeNumber, string name, double elapsedTime)
-    {
-        var records = ReadRecordsFromFile();
-
-        if (placeNumber is >= 0 and < TopRecordsAmount)
-        {
-            records.Insert(placeNumber, new RecordTime(name ?? "Unknown", elapsedTime));
-
-            WriteRecordsToFile(records);
-
-            return true;
-        }
-
-        return false;
-    }
-
-    public static List<RecordTime> ReadRecordsFromFile()
-    {
-        if (!File.Exists(RecordsFilePath))
-        {
-            return new List<RecordTime>();
-        }
-
-        var text = File.ReadAllText(RecordsFilePath);
-
-        List<RecordTime> records;
-
-        try
-        {
-            records = JsonSerializer.Deserialize<List<RecordTime>>(text);
-        }
-        catch
-        {
-            return new List<RecordTime>();
-        }
-
-        return records?.OrderBy(rt => rt.Time).ToList();
-    }
-
-    private static void WriteRecordsToFile(List<RecordTime> recordsList)
-    {
-        var text = JsonSerializer.Serialize(recordsList);
-
-        File.WriteAllText(RecordsFilePath, text);
     }
 }

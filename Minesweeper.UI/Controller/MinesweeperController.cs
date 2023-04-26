@@ -18,9 +18,9 @@ public class MinesweeperController
 
     public double ElapsedTime => _game.ElapsedTime;
 
-    public List<RecordTime> RecordsTimes => _game.ReadRecordsFromFile();
+    public List<RecordTime> RecordsTimes => RecordsService.ReadRecordsFromFile();
 
-    public int GetNewRecordPlace => _game.GetNewRecordPlace();
+    public int GetNewRecordPlace => RecordsService.GetNewRecordPlace(_game.ElapsedTime);
 
     private bool _isFirstClick = true;
 
@@ -57,7 +57,7 @@ public class MinesweeperController
 
     public bool AddNewRecord(int placeNumber, string name, double elapsedTime)
     {
-        return _game.AddNewRecord(placeNumber, name, elapsedTime);
+        return RecordsService.AddNewRecord(placeNumber, name, elapsedTime);
     }
 
     public void TrySetRemoveFlag(Cell cell)
