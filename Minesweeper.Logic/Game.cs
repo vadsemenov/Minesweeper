@@ -33,7 +33,7 @@ public class Game
 
     private readonly Stopwatch _timer = new();
 
-    public double ElapsedTime => (double)_timer.ElapsedMilliseconds / 1000;
+    public TimeSpan ElapsedTime => _timer.Elapsed;
 
     public Game(int rowsAmount, int columnsAmount, int mineAmount)
     {

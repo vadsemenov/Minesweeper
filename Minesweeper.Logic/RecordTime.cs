@@ -2,4 +2,4 @@
 
 namespace Minesweeper.Logic;
 
-public record RecordTime(GameDifficulty GameDifficulty, string Name, double Time);
+public record RecordTime(GameDifficulty GameDifficulty, string Name, TimeSpan Time);

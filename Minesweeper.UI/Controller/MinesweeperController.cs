@@ -1,10 +1,15 @@
-﻿using Minesweeper.Logic;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using Minesweeper.Logic;
 using Minesweeper.Logic.Enums;
+using Timer = System.Windows.Forms.Timer;
 
 namespace Minesweeper.UI.Controller;
-public class MinesweeperController
+public class MinesweeperController : INotifyPropertyChanged
 {
     private readonly Game _game;
+
+    private readonly Timer _timer = new();
     public GameDifficulty GameDifficulty { get; }
 
     public int RowsAmount => _game.RowsAmount;
@@ -13,10 +18,9 @@ public class MinesweeperController
     public Cell[,] Field => _game.Field;
 
     public GameStatus GameStatus => _game.GameStatus;
-
     public event Action RedrawFieldEvent;
 
-    public double ElapsedTime => _game.ElapsedTime;
+    public string ElapsedTime => $"{_game.ElapsedTime.Minutes:00}:{_game.ElapsedTime.Seconds:00}:{_game.ElapsedTime.Milliseconds / 10:00}";
 
     public List<RecordTime> RecordsTimes => RecordsService.ReadRecordsFromFile().Where(x => x.GameDifficulty == GameDifficulty).ToList();
 
@@ -26,11 +30,21 @@ public class MinesweeperController
 
     public MinesweeperController(GameDifficulty gameDifficulty, Action redrawFieldEvent)
     {
+        _timer.Tick += TimerTick;
+        _timer.Interval = 10;
+        _timer.Start();
+
+
         RedrawFieldEvent = redrawFieldEvent;
 
         GameDifficulty = gameDifficulty;
 
         _game = new Game(gameDifficulty);
+    }
+
+    private void TimerTick(object sender, EventArgs e)
+    {
+        OnPropertyChanged(nameof(ElapsedTime));
     }
 
     public void TryOpenNeighboringCells(int rowCount, int columnCount)
@@ -55,14 +69,29 @@ public class MinesweeperController
         RedrawFieldEvent?.Invoke();
     }
 
-    public bool AddNewRecord(int placeNumber, string name, double elapsedTime)
+    public bool AddNewRecord(int placeNumber, string name)
     {
-        return RecordsService.AddNewRecord(placeNumber, GameDifficulty, name, elapsedTime);
+        return RecordsService.AddNewRecord(placeNumber, GameDifficulty, name, _game.ElapsedTime);
     }
 
     public void TrySetRemoveFlag(Cell cell)
     {
         _game.TrySetOrRemoveFlag(cell);
         RedrawFieldEvent?.Invoke();
+    }
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        field = value;
+        OnPropertyChanged(propertyName);
+        return true;
     }
 }

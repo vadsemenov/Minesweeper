@@ -9,7 +9,7 @@ public static class RecordsService
 
     private const int TopRecordsAmount = 5;
 
-    public static int GetNewRecordPlace(GameDifficulty gameDifficulty, double elapsedTime)
+    public static int GetNewRecordPlace(GameDifficulty gameDifficulty, TimeSpan elapsedTime)
     {
         var records = ReadRecordsFromFile();
 
@@ -23,7 +23,7 @@ public static class RecordsService
         return -1;
     }
 
-    public static bool AddNewRecord(int placeNumber, GameDifficulty gameDifficulty, string name, double elapsedTime)
+    public static bool AddNewRecord(int placeNumber, GameDifficulty gameDifficulty, string name, TimeSpan elapsedTime)
     {
         var records = ReadRecordsFromFile();
 

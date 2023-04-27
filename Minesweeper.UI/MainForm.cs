@@ -17,15 +17,18 @@ public partial class MainForm : Form
     {
         InitializeComponent();
 
-        timer.Tick += TimerTick;
-        timer.Interval = 1000;
-
         InitializeNewField(GameDifficulty.Easy);
     }
 
-    private void TimerTick(object sender, EventArgs e)
+    private void BindTimeLabel()
     {
-        timeLabel.Text = _controller.ElapsedTime.ToString("#####");
+        var bindingSource = new BindingSource();
+        bindingSource.DataSource = _controller;
+
+        timeLabel.DataBindings.Clear();
+        
+        timeLabel.DataBindings.Add(new Binding("Text", bindingSource, nameof(_controller.ElapsedTime),
+            true, DataSourceUpdateMode.OnPropertyChanged));
     }
 
     private void InitializeNewField(GameDifficulty gameDifficulty)
@@ -36,9 +39,9 @@ public partial class MainForm : Form
 
         SetFormSize();
 
+        BindTimeLabel();
+        
         _isGameOver = false;
-
-        timer.Start();
     }
 
     private void CreateFieldView()
@@ -195,7 +198,7 @@ public partial class MainForm : Form
                     recordsUserName = newRecordsUserNameForm.UserName;
                 }
 
-                if (_controller.AddNewRecord(recordPlace, recordsUserName, _controller.ElapsedTime))
+                if (_controller.AddNewRecord(recordPlace, recordsUserName))
                 {
                     var highScores = new BestTimesForm(_controller.RecordsTimes);
 

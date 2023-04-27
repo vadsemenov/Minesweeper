@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             menuStrip1 = new MenuStrip();
             menuToolStripMenuItem = new ToolStripMenuItem();
@@ -40,7 +39,6 @@
             tableLayoutPanel1 = new TableLayoutPanel();
             newGameButton = new Button();
             timeLabel = new Label();
-            timer = new System.Windows.Forms.Timer(components);
             label1 = new Label();
             menuStrip1.SuspendLayout();
             SuspendLayout();
@@ -113,7 +111,7 @@
             newGameButton.Anchor = AnchorStyles.Top;
             newGameButton.BackgroundImage = Properties.Resources.smile;
             newGameButton.BackgroundImageLayout = ImageLayout.Zoom;
-            newGameButton.Location = new Point(360, 31);
+            newGameButton.Location = new Point(372, 31);
             newGameButton.Name = "newGameButton";
             newGameButton.RightToLeft = RightToLeft.No;
             newGameButton.Size = new Size(36, 36);
@@ -127,11 +125,11 @@
             timeLabel.AutoSize = true;
             timeLabel.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
             timeLabel.ForeColor = Color.Lime;
-            timeLabel.Location = new Point(270, 31);
+            timeLabel.Location = new Point(264, 31);
             timeLabel.Name = "timeLabel";
-            timeLabel.Size = new Size(46, 30);
+            timeLabel.Size = new Size(89, 30);
             timeLabel.TabIndex = 3;
-            timeLabel.Text = "000";
+            timeLabel.Text = "00:00:00";
             timeLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label1
@@ -139,7 +137,7 @@
             label1.Anchor = AnchorStyles.Top;
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.Location = new Point(205, 34);
+            label1.Location = new Point(193, 34);
             label1.Name = "label1";
             label1.Size = new Size(57, 25);
             label1.TabIndex = 4;
@@ -182,7 +180,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private Button newGameButton;
         private Label timeLabel;
-        private System.Windows.Forms.Timer timer;
         private Label label1;
     }
 }

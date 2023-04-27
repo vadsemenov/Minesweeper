@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using Minesweeper.Logic;
+﻿using Minesweeper.Logic;
 
 namespace Minesweeper.UI
 {
@@ -33,7 +32,7 @@ namespace Minesweeper.UI
             for (var i = 0; i < recordsCount; i++)
             {
                 ((Label)tableLayoutPanel1.GetControlFromPosition(1, i)).Text = RecordsTimes[i].Name;
-                ((Label)tableLayoutPanel1.GetControlFromPosition(2, i)).Text = RecordsTimes[i].Time.ToString(CultureInfo.InvariantCulture);
+                ((Label)tableLayoutPanel1.GetControlFromPosition(2, i)).Text = $@"{RecordsTimes[i].Time.Minutes:00}:{RecordsTimes[i].Time.Seconds:00}:{RecordsTimes[i].Time.Milliseconds / 10:00}";
             }
         }
 
