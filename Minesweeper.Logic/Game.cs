@@ -9,6 +9,7 @@ namespace Minesweeper.Logic;
 public class Game
 {
     public Cell[,] Field { get; private set; }
+
     public int RowsAmount { get; private set; }
     public int ColumnsAmount { get; private set; }
 
