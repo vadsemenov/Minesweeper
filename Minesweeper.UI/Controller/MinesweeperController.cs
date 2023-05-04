@@ -2,14 +2,12 @@
 using System.Runtime.CompilerServices;
 using Minesweeper.Logic;
 using Minesweeper.Logic.Enums;
-using Timer = System.Windows.Forms.Timer;
 
 namespace Minesweeper.UI.Controller;
 public class MinesweeperController : INotifyPropertyChanged
 {
     private readonly Game _game;
 
-    private readonly Timer _timer = new();
     public GameDifficulty GameDifficulty { get; }
 
     public int RowsAmount => _game.RowsAmount;
@@ -20,31 +18,37 @@ public class MinesweeperController : INotifyPropertyChanged
     public GameStatus GameStatus => _game.GameStatus;
     public event Action RedrawFieldEvent;
 
-    public string ElapsedTime => $"{_game.ElapsedTime.Minutes:00}:{_game.ElapsedTime.Seconds:00}:{_game.ElapsedTime.Milliseconds / 10:00}";
+    public IRecordsService RecordsService => _game.RecordsService;
 
-    public List<RecordTime> RecordsTimes => RecordsService.ReadRecordsFromFile().Where(x => x.GameDifficulty == GameDifficulty).ToList();
+    public string ElapsedTime { get; private set; }
 
-    public int GetNewRecordPlace => RecordsService.GetNewRecordPlace(GameDifficulty, _game.ElapsedTime);
+    private TimeSpan _time;
+
+    public List<RecordTime> RecordsTimes => RecordsService.GetAllRecordsTimes(GameDifficulty);
+
+    public int GetNewRecordPlace => RecordsService.GetNewRecordPlace(GameDifficulty, _time);
 
     private bool _isFirstClick = true;
 
-    public MinesweeperController(GameDifficulty gameDifficulty, Action redrawFieldEvent)
+    public MinesweeperController(GameDifficulty gameDifficulty, MainForm mainForm)
     {
-        _timer.Tick += TimerTick;
-        _timer.Interval = 10;
-        _timer.Start();
-
-
-        RedrawFieldEvent = redrawFieldEvent;
+        RedrawFieldEvent = mainForm.RedrawFieldEvent;
 
         GameDifficulty = gameDifficulty;
 
-        _game = new Game(gameDifficulty);
+        _game = new Game(gameDifficulty, new RecordsService(), mainForm);
+
+        _game.TimerTickAction += TimerTickAction;
     }
 
-    private void TimerTick(object sender, EventArgs e)
+    private void TimerTickAction(TimeSpan time)
     {
-        OnPropertyChanged(nameof(ElapsedTime));
+        if (GameStatus == GameStatus.Run)
+        {
+            _time = time;
+            ElapsedTime = $"{_time.Minutes:00}:{_time.Seconds:00}:{_time.Milliseconds / 10:00}";
+            OnPropertyChanged(nameof(ElapsedTime));
+        }
     }
 
     public void TryOpenNeighboringCells(int rowCount, int columnCount)
@@ -71,12 +75,12 @@ public class MinesweeperController : INotifyPropertyChanged
 
     public bool AddNewRecord(int placeNumber, string name)
     {
-        return RecordsService.AddNewRecord(placeNumber, GameDifficulty, name, _game.ElapsedTime);
+        return RecordsService.AddNewRecord(placeNumber, GameDifficulty, name, _time);
     }
 
     public void TrySetRemoveFlag(Cell cell)
     {
-        _game.TrySetOrRemoveFlag(cell);
+        Game.TrySetOrRemoveFlag(cell);
         RedrawFieldEvent?.Invoke();
     }
 
@@ -89,9 +93,15 @@ public class MinesweeperController : INotifyPropertyChanged
 
     protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
     {
-        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        if (EqualityComparer<T>.Default.Equals(field, value))
+        {
+            return false;
+        }
+
         field = value;
+
         OnPropertyChanged(propertyName);
+
         return true;
     }
 }

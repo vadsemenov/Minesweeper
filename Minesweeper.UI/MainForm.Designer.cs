@@ -36,7 +36,7 @@
             aboutToolStripMenuItem = new ToolStripMenuItem();
             toolStripMenuItem1 = new ToolStripSeparator();
             exitToolStripMenuItem = new ToolStripMenuItem();
-            tableLayoutPanel1 = new TableLayoutPanel();
+            tableLayoutPanel = new TableLayoutPanel();
             newGameButton = new Button();
             timeLabel = new Label();
             label1 = new Label();
@@ -93,18 +93,18 @@
             exitToolStripMenuItem.Text = "Exit";
             exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
             // 
-            // tableLayoutPanel1
+            // tableLayoutPanel
             // 
-            tableLayoutPanel1.AutoSize = true;
-            tableLayoutPanel1.ColumnCount = 1;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle());
-            tableLayoutPanel1.Location = new Point(0, 70);
-            tableLayoutPanel1.Margin = new Padding(0);
-            tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 1;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle());
-            tableLayoutPanel1.Size = new Size(179, 171);
-            tableLayoutPanel1.TabIndex = 1;
+            tableLayoutPanel.AutoSize = true;
+            tableLayoutPanel.ColumnCount = 1;
+            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle());
+            tableLayoutPanel.Location = new Point(0, 70);
+            tableLayoutPanel.Margin = new Padding(0);
+            tableLayoutPanel.Name = "tableLayoutPanel";
+            tableLayoutPanel.RowCount = 1;
+            tableLayoutPanel.RowStyles.Add(new RowStyle());
+            tableLayoutPanel.Size = new Size(179, 171);
+            tableLayoutPanel.TabIndex = 1;
             // 
             // newGameButton
             // 
@@ -151,7 +151,7 @@
             Controls.Add(label1);
             Controls.Add(timeLabel);
             Controls.Add(newGameButton);
-            Controls.Add(tableLayoutPanel1);
+            Controls.Add(tableLayoutPanel);
             Controls.Add(menuStrip1);
             DoubleBuffered = true;
             FormBorderStyle = FormBorderStyle.FixedSingle;
@@ -177,7 +177,7 @@
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel;
         private Button newGameButton;
         private Label timeLabel;
         private Label label1;

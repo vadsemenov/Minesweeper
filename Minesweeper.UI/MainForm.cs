@@ -26,30 +26,30 @@ public partial class MainForm : Form
         bindingSource.DataSource = _controller;
 
         timeLabel.DataBindings.Clear();
-        
+
         timeLabel.DataBindings.Add(new Binding("Text", bindingSource, nameof(_controller.ElapsedTime),
             true, DataSourceUpdateMode.OnPropertyChanged));
     }
 
     private void InitializeNewField(GameDifficulty gameDifficulty)
     {
-        _controller = new MinesweeperController(gameDifficulty, RedrawFieldEvent);
+        _controller = new MinesweeperController(gameDifficulty, this);
 
         CreateFieldView();
 
         SetFormSize();
 
         BindTimeLabel();
-        
+
         _isGameOver = false;
     }
 
     private void CreateFieldView()
     {
-        tableLayoutPanel1.Controls.Clear();
+        tableLayoutPanel.Controls.Clear();
 
-        tableLayoutPanel1.RowCount = _controller.RowsAmount;
-        tableLayoutPanel1.ColumnCount = _controller.ColumnsAmount;
+        tableLayoutPanel.RowCount = _controller.RowsAmount;
+        tableLayoutPanel.ColumnCount = _controller.ColumnsAmount;
 
         _buttonsField = new ExtendedButton[_controller.RowsAmount, _controller.ColumnsAmount];
 
@@ -70,14 +70,14 @@ public partial class MainForm : Form
 
                 _buttonsField[y, x] = button;
 
-                tableLayoutPanel1.Controls.Add(button, x, y);
+                tableLayoutPanel.Controls.Add(button, x, y);
             }
         }
 
         ResumeLayout();
     }
 
-    private void RedrawFieldEvent()
+    public void RedrawFieldEvent()
     {
         for (var y = 0; y < _controller.RowsAmount; y++)
         {
@@ -135,13 +135,13 @@ public partial class MainForm : Form
             }
         }
 
-        tableLayoutPanel1.Focus();
+        tableLayoutPanel.Focus();
     }
 
     private void SetFormSize()
     {
-        var width = tableLayoutPanel1.Bounds.Width + 20;
-        var height = tableLayoutPanel1.Bounds.Height + 90 + 20;
+        var width = tableLayoutPanel.Bounds.Width + 20;
+        var height = tableLayoutPanel.Bounds.Height + 90 + 20;
 
         Size = new Size(width, height);
     }

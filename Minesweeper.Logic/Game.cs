@@ -1,16 +1,18 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel;
 using System.Text;
+using System.Timers;
 using Minesweeper.Logic.Enums;
+using Timer = System.Timers.Timer;
 
 namespace Minesweeper.Logic;
 
 public class Game
 {
-    public Cell[,] Field { get; }
-    public int RowsAmount { get; }
-    public int ColumnsAmount { get; }
+    public Cell[,] Field { get; private set; }
+    public int RowsAmount { get; private set; }
+    public int ColumnsAmount { get; private set; }
 
-    public int MineAmount { get; }
+    public int MinesAmount { get; private set; }
 
     private GameStatus _gameStatus;
 
@@ -31,57 +33,65 @@ public class Game
 
     private readonly Random _random = new();
 
-    private readonly Stopwatch _timer = new();
+    public IRecordsService RecordsService { get; private set; }
 
-    public TimeSpan ElapsedTime => _timer.Elapsed;
+    private Timer _timer;
 
-    public Game(int rowsAmount, int columnsAmount, int mineAmount)
+    public Action<TimeSpan> TimerTickAction;
+
+    private TimeSpan _time = TimeSpan.Zero;
+
+    public Game(int rowsAmount, int columnsAmount, int minesAmount, IRecordsService recordsService, ISynchronizeInvoke syncObject)
     {
+        SetGameSettings(rowsAmount, columnsAmount, minesAmount, recordsService, syncObject);
+    }
+
+    public Game(GameDifficulty gameDifficulty, IRecordsService recordsService, ISynchronizeInvoke syncObject)
+    {
+        switch (gameDifficulty)
+        {
+            case GameDifficulty.Easy:
+                SetGameSettings(9, 9, 10, recordsService, syncObject);
+                break;
+            case GameDifficulty.Normal:
+                SetGameSettings(12, 12, 20, recordsService, syncObject);
+                break;
+            case GameDifficulty.Hard:
+                SetGameSettings(20, 20, 55, recordsService, syncObject);
+                break;
+        }
+    }
+
+    private void SetGameSettings(int rowsAmount, int columnsAmount, int minesAmount, IRecordsService recordsService, ISynchronizeInvoke syncObject)
+    {
+        RecordsService = recordsService;
+
         Field = new Cell[rowsAmount, columnsAmount];
 
         RowsAmount = rowsAmount;
         ColumnsAmount = columnsAmount;
 
-        MineAmount = mineAmount;
+        MinesAmount = minesAmount;
+
 
         GameStatus = GameStatus.Run;
 
         GenerateNewField();
 
-        _timer.Restart();
+        _timer = new Timer();
+        _timer.SynchronizingObject = syncObject;
+        _timer.Elapsed += TimerOnElapsed;
+        _timer.Interval = 10;
+        _timer.Start();
     }
 
-    public Game(GameDifficulty gameDifficulty)
+    private void TimerOnElapsed(object sender, ElapsedEventArgs e)
     {
-        switch (gameDifficulty)
-        {
-            case GameDifficulty.Easy:
-                RowsAmount = 9;
-                ColumnsAmount = 9;
-                MineAmount = 10;
-                break;
-            case GameDifficulty.Normal:
-                RowsAmount = 12;
-                ColumnsAmount = 12;
-                MineAmount = 20;
-                break;
-            case GameDifficulty.Hard:
-                RowsAmount = 20;
-                ColumnsAmount = 20;
-                MineAmount = 55;
-                break;
-        }
-
-        Field = new Cell[RowsAmount, ColumnsAmount];
-
-        GameStatus = GameStatus.Run;
-
-        GenerateNewField();
-
-        _timer.Restart();
+        _time += TimeSpan.FromMilliseconds(10);
+        TimerTickAction.Invoke(_time);
     }
 
-    public void TrySetOrRemoveFlag(Cell cell)
+    public static void TrySetOrRemoveFlag(Cell cell)
     {
         if (cell.Status == CellStatus.OpenedCell)
         {
@@ -338,7 +348,7 @@ public class Game
 
     private void PlaceMines()
     {
-        var mineCount = MineAmount;
+        var mineCount = MinesAmount;
 
         while (mineCount > 0)
         {
@@ -407,24 +417,6 @@ public class Game
                     stringBuilder.Append((int)Field[y, x].CellContent);
                     stringBuilder.Append(' ');
                 }
-            }
-
-            stringBuilder.AppendLine();
-        }
-
-        return stringBuilder.ToString();
-    }
-
-    public string FieldView()
-    {
-        var stringBuilder = new StringBuilder();
-
-        for (var y = 0; y < RowsAmount; y++)
-        {
-            for (var x = 0; x < ColumnsAmount; x++)
-            {
-                stringBuilder.Append((int)Field[y, x].Status);
-                stringBuilder.Append(' ');
             }
 
             stringBuilder.AppendLine();
