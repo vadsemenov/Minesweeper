@@ -33,7 +33,7 @@ public partial class MainForm : Form
 
     private void InitializeNewField(GameDifficulty gameDifficulty)
     {
-        _controller = new MinesweeperController(gameDifficulty, this);
+        _controller = new MinesweeperController(gameDifficulty, RedrawFieldEvent, this);
 
         CreateFieldView();
 

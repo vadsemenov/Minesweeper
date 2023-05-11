@@ -30,13 +30,13 @@ public class MinesweeperController : INotifyPropertyChanged
 
     private bool _isFirstClick = true;
 
-    public MinesweeperController(GameDifficulty gameDifficulty, MainForm mainForm)
+    public MinesweeperController(GameDifficulty gameDifficulty, Action redrawFieldAction, ISynchronizeInvoke synchronizeInvoke)
     {
-        RedrawFieldEvent = mainForm.RedrawFieldEvent;
+        RedrawFieldEvent = redrawFieldAction;
 
         GameDifficulty = gameDifficulty;
 
-        _game = new Game(gameDifficulty, new RecordsService(), mainForm);
+        _game = new Game(gameDifficulty, new RecordsService(), synchronizeInvoke);
 
         _game.TimerTickAction += TimerTickAction;
     }
